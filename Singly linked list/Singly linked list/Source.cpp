@@ -1276,7 +1276,7 @@ int main()
 
 	Main_Function::Free(&begin);
 
-	// Возврат количество ошибок
+	// Возврат количество ошибоk
 	return Error::no_of_error; 
 }
 
