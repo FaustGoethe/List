@@ -270,11 +270,12 @@ namespace Side_functions
 		return result;
 	}
 
+	//Индексация списка
 	void Indexation(List** begin) 
 	{
 		List* temp = *begin;
 
-		for (int i(0); i < List_Size(*begin); i++)
+		for (size_t i(0); i < List_Size(*begin); i++)
 		{
 			temp->a.index = (i + 1);
 			temp = temp->next;
@@ -676,14 +677,14 @@ namespace Inspection_input
 	}
 
 	template<typename T>
-	void Inpection_Input(T& a,char str[])
+	void Inpection_Input(T& a)
 	{
 		
 		while (!(cin >> a) || a <= 0)
 		{
 			cin.clear();
 			while (cin.get() != '\n');
-			cout << str << endl;
+			cout << "Введите индекс элемента, который хотите удалить: ";
 
 		}
 	}
@@ -941,12 +942,27 @@ namespace Distribution
 				Inspection_input::Inspection_input(b);
 				Main_Function::Delete(*&begin, b);
 				break;
+
 			case 51:
+				if (Error::Encryption_Status == true)
+				{
+					cerr << "Невозможно удалить элемент из зашифрованного списка\a" << endl;
+					Error::no_of_error++;
+					break;
+				}
 				size_t pv;
+				cout << "Введите индекс элемента, который хотите удалить: ";
+				if (pv <= 0 || pv > Side_functions::List_Size(*begin))
+				{
+					cout << "Индекс должен быть больше нуля и меньше " << Side_functions::List_Size(*begin) << '\a' << endl;
+					break;
+				}
+				Inspection_input::Inpection_Input(pv);
 				try
 				{
-					Inspection_input::Inpection_Input(pv, "введите индекс элемента");
-					Main_Function::IndexDelete(*&begin, pv);
+					if (Main_Function::IndexDelete(*&begin, pv) == 0)
+						cout << "Елемент с таким индексом не существует!\a" << endl;
+						
 				}
 				catch (Error::List_not_found a)
 				{
