@@ -163,12 +163,11 @@ namespace menu
 	void FinMenu()
 	{
 		cout << "1.Вывести список" << endl;
-		cout << "2.Добавить элемент в список" << endl;
-		cout << "3.Удалить элемент из списка" << endl;
-		cout << "4.Найти элемент списка" << endl;
-		cout << "5.Отсортировать список" << endl;
-		cout << "6.Зашифровать/расшифровать список" << endl;
-		cout << "7.Выйти" << endl;
+		cout << "2.Добавка/удаление" << endl;
+		cout << "3.Найти элемент списка" << endl;
+		cout << "4.Отсортировать список" << endl;
+		cout << "5.Зашифровать/расшифровать список" << endl;
+		cout << "6.Выйти" << endl;
 	}
 
 	// Меню fstream
@@ -286,7 +285,7 @@ namespace Side_functions
 	void Information_of_Programm()
 	{
 		system("cls");
-		string version = "3.9.1", author_name = "Колобов Кирилл";
+		string version = "3.9.2", author_name = "Колобов Кирилл";
 		cout << "Версия программы: " << version << endl;
 		cout << "Автор пограммы: " << author_name << endl;
 	}
@@ -312,11 +311,14 @@ namespace Main_Function
 		*begin = NULL;
 	}
 
+	//Удаение по ключу
 	void Delete(List** begin, const A &a)
 	{
-		if (Error::List_Status == false && Error::Fin_status == false)
-			throw Error::List_not_found(" the list has not been created!");
-
+		if (*begin == NULL)
+		{
+			cerr << "Начало списка имеет положение NULL!\a" << endl;
+			return;
+		}
 		List* t = *begin;
 
 		if (t->a.key == a.key)
@@ -342,15 +344,28 @@ namespace Main_Function
 		cout << "Значение не найдено!\a" << endl;
 	}
 
+	//Удаление по индексу
 	size_t IndexDelete(List** begin, const size_t index)
 	{
-		if (Error::List_Status == false && Error::Fin_status == false)
-			throw Error::List_not_found(" список еще не создан");
+		if (*begin == NULL)
+		{
+			cerr << "Список еще не создан\a" << endl;
+			return -1;
+		}
 
 		size_t temp = 0;
 
 		List* t = *begin;
 		List*  t1 = t->next;
+
+		if (t->a.index == index)
+		{
+			temp = t->a.key;
+			*begin = t->next;
+			delete t;
+			Side_functions::Indexation(*&begin);
+			return temp;
+		}
 
 		while (t1 != NULL)
 		{
@@ -365,14 +380,15 @@ namespace Main_Function
 			t = t1;
 			t1 = t1->next;
 		}
-		return temp;
+		cout << "Элемента с таким индексом не существует!" << endl;
+		return -1;
 	}
 
 	// Печать списка
 	void Print(List* begin) 
 	{
-		if (begin == NULL)
-			return;
+		//if (begin == NULL)
+		//	return;
 
 		List* print = begin;
 
@@ -395,7 +411,7 @@ namespace Main_Function
 		cout << "Статус спсика: ";
 		if (Error::Encryption_Status == true)
 		{
-			cout << " зашифрован" << endl;
+			cout << " зашифрован" << endl << endl;
 			return;
 		}
 		else
@@ -527,11 +543,7 @@ namespace Main_Function
 			throw Error::List_not_found(" the list has not been created!");
 
 		List* t = begin;
-
 		size_t Count_Number = 0;
-
-		if (begin == NULL)
-			return 0;
 
 		while (t != NULL)
 		{
@@ -548,8 +560,11 @@ namespace Main_Function
 	// Шифрование списка
 	void Encryption(List** begin, string& key) 
 	{
-		if (Error::List_Status == false)
-			throw Error::List_not_found(" список еще не создан!");
+		if (*begin == NULL)
+		{
+			cerr << "Невозможно зашифровать список! Нет элементов!\a" << endl;
+			return;
+		}
 
 
 		List* temp = *begin;
@@ -590,7 +605,11 @@ namespace Main_Function
 	// Шифрование веведенного из файла списка
 	void Fin_Encryption(List** begin, string& key) 
 	{
-	
+		if (*begin == NULL)
+		{
+			cerr << "Невозможно зашифровать список! Нет элементов!\a" << endl;
+			return;
+		}
 		List* temp = *begin;
 
 		if (Error::Encryption_fin_Status == true)
@@ -695,8 +714,11 @@ namespace Fstream
 	//Ввод списка в файл
 	void Fout(ofstream &fout, List* begin, string &key)
 	{
-		if (Error::List_Status == false && Error::Fin_status == false)
-			throw Error::List_not_found(" список еще не создан");
+		if (begin == NULL)
+		{
+			cerr << "Невозможно зашифровать список! Нет элементов!\a" << endl;
+			return;
+		}
 		List* print = begin;
 		string FoutStr;
 
@@ -715,7 +737,7 @@ namespace Fstream
 
 		if (Error::Encryption_Status == true)
 			fout << key;
-		
+		cout << "Список успешно выведен в файл!" << endl;
 	}
 
 	//Сохранение изменений после работы с выведенным из файла списком
@@ -952,22 +974,14 @@ namespace Distribution
 				}
 				size_t pv;
 				cout << "Введите индекс элемента, который хотите удалить: ";
+				Inspection_input::Inpection_Input(pv);
 				if (pv <= 0 || pv > Side_functions::List_Size(*begin))
 				{
 					cout << "Индекс должен быть больше нуля и меньше " << Side_functions::List_Size(*begin) << '\a' << endl;
 					break;
 				}
-				Inspection_input::Inpection_Input(pv);
-				try
-				{
-					if (Main_Function::IndexDelete(*&begin, pv) == 0)
-						cout << "Елемент с таким индексом не существует!\a" << endl;
-						
-				}
-				catch (Error::List_not_found a)
-				{
-					cerr << "ERROR: " << a.error_category << ":" << a.name_of_error << '\a' << endl;
-				}
+				system("cls");
+				cout << "Был удален элемент с ключом: " << Main_Function::IndexDelete(*&begin, pv) << endl << endl;
 				break;
 			case 52:
 				break;
@@ -1059,7 +1073,6 @@ namespace Distribution
 			return;
 		}
 
-		//Error::Fin_List_Status = true;
 		do
 		{
 			menu::FinMenu();
@@ -1067,53 +1080,26 @@ namespace Distribution
 			system("cls");
 			switch (c)
 			{
-
 			case 49:
 				Main_Function::Fin_Print(*begin1);
 				break;
 
 			case 50:
-				A a;
-				if (Error::Encryption_fin_Status == true)
-				{
-					cerr << "Невозможно добавть элемент в зашифрованный список!\a" << endl;
-					break;
-				}
-				Inspection_input::Inspection_input(a);
-				Main_Function::Insert(*&begin1, a);
-				Side_functions::Indexation(*&begin1);
-				
+				DistrElements(*&begin1);
 				break;
-
 			case 51:
-				A b;
-				if (Error::Encryption_fin_Status == true)
-				{
-					cerr << "Невозможно удалить элемент и зашифрованного списка!\a" << endl;
-					break;
-				}
-				Inspection_input::Inspection_input(b);
-				Main_Function::Delete(*&begin1, b);
+				cout << "Введите значение элемента, которого хотите найти: ";
+				cin >> count;
+				(Main_Function::Count(*begin1, &count) <= 0) ? (cout << "Значение не найдено!" << endl) : (cout << "Индекс искомого элемента: " << Main_Function::Count(*begin1, &count) << endl);
 				break;
 
 			case 52:
-				cout << "Введите значение элемента, которого хотите найти: ";
-				cin >> count;
-				if (Main_Function::Count(*begin1, &count) <= 0)
-					cout << "Значение не найдено!" << endl;
-
-				else
-					cout << "Индекс искомого элемента: " << Main_Function::Count(*begin1, &count) << endl;
-
-				break;
-
-			case 53:
 				DistrSort(*&begin1);
 				break;
-			case 54:
+			case 53:
 				Main_Function::Fin_Encryption(*&begin1, key);
 				break;
-			case 55:
+			case 54:
 				cout << "Хотите сохранить изменения(y/n)?" << endl;
 				c1 = (char)_getch();
 				switch (c1)
@@ -1133,7 +1119,7 @@ namespace Distribution
 				break;
 			}
 
-		} while (c != 55);
+		} while (c != 54);
 	}
 
 	void Fsteam(ifstream &fin, ofstream &fout, List** begin1, List** begin, string& key)
@@ -1148,14 +1134,7 @@ namespace Distribution
 			switch (c)
 			{
 			case 49:
-				try
-				{
-					Fstream::Fout(fout, *begin,key);
-				}
-				catch (Error::List_not_found a)
-				{
-					cerr << "ERROR: " << a.error_category << ": " << a.name_of_error << '\a' << endl;
-				}
+				Fstream::Fout(fout, *begin,key);
 				break;
 
 			case 50:
@@ -1258,10 +1237,6 @@ namespace Distribution
 				{
 					Main_Function::Encryption(*&begin, key);
 				}
-				catch (Error::List_not_found a)
-				{
-					cerr << "ERROR: " << a.error_category << ": " << a.name_of_error << '\a' << endl;
-				}
 				catch (Error::Few_Elements a)
 				{
 					cerr << "ERROR: " << a.error_category << ": " << a.name_of_error << '\a' << endl;
@@ -1273,7 +1248,7 @@ namespace Distribution
 				break;
 			}
 		} while (c != 56);
-		delete[]Array;
+		delete[] Array;
 	}
 }
 
