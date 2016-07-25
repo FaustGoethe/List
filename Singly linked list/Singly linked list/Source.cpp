@@ -206,6 +206,8 @@ namespace Side_functions
 	// Среднее арифметическое
 	double Average(List* begin) 
 	{
+		if (begin == NULL)
+			return 0;
 		List* temp = begin;
 
 		double i = 0;
@@ -222,6 +224,8 @@ namespace Side_functions
 	// Среднее геометрическое
 	long double AveregeGeometry(List* begin) 
 	{
+		if (begin == NULL)
+			return 0;
 		List* temp = begin;
 		long double i = 1;
 
@@ -237,6 +241,8 @@ namespace Side_functions
 	// Максимальное значение списка
 	size_t Maximum(List* begin) 
 	{
+		if (begin == NULL)
+			return 0;
 		List* temp = begin;
 		size_t result = 0;
 		while (temp != NULL)
@@ -253,6 +259,8 @@ namespace Side_functions
 	// Минимальное значение списка
 	size_t Minimum(List* begin)
 	{
+		if (begin == NULL)
+			return 0;
 		List* temp = begin;
 		size_t result = LONG_MAX;
 
@@ -387,9 +395,6 @@ namespace Main_Function
 	// Печать списка
 	void Print(List* begin) 
 	{
-		//if (begin == NULL)
-		//	return;
-
 		List* print = begin;
 
 		while (print != NULL)
@@ -418,7 +423,7 @@ namespace Main_Function
 			cout << " не зашифрован" << endl;
 		cout << endl;
 		cout.setf(ios_base::fixed, ios_base::floatfield);
-		cout.precision(3);
+		cout.precision(0);
 
 		cout << "Среднее арифметическое списка: " << Side_functions::Average(begin) << endl;
 		cout << "Среднее геометрическое списка: " << Side_functions::AveregeGeometry(begin) << endl;
@@ -1210,14 +1215,16 @@ namespace Distribution
 				break;
 
 			case 53:
+				if (Error::List_Status == false) {
+					cerr << "Error: List has not created\a" << endl;
+					break;
+				}
 				cout << "Введите значение, которое хотите найти: ";
 				cin >> count;
-				try
-				{
+				try{
 					Main_Function::Count(*begin, &count) <= 0 ? (cout << "Значение не найдено!" << endl) : (cout << "Индекс искомого элемента: " << Main_Function::Count(*begin, &count) << endl);
 				}
-				catch (Error::List_not_found a)
-				{
+				catch (Error::List_not_found a){
 					cerr << "ERROR: " << a.error_category << ": " << a.name_of_error << '\a' << endl;
 				}
 				break;
@@ -1267,7 +1274,7 @@ int main()
 
 	Main_Function::Free(&begin);
 
-	// Возврат количество ошибоk
+	// Возврат количества ошибок
 	return Error::no_of_error; 
 }
 
