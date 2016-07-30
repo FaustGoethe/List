@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <fstream>
 #include <string>
+#include "List.h"
 
 using namespace std;
 
@@ -1269,7 +1270,7 @@ int main()
 	
 	ofstream fout;
 	ifstream fin;
-	
+
 	Distribution::Distr(fin, fout, &begin, &begin1);
 
 	Main_Function::Free(&begin);
