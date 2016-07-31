@@ -8,9 +8,17 @@ int main(int argc, char* argv[])
 	SLL::List a;
 	for (int i(1); i <= 5; i++)
 		a.Insert(i);
-	std::ofstream fout;
-	a.Encryption("Hello");
-	a.Input_with_file(fout, (std::string)"text.txt", (std::string)"Hello");
+	std::cout << a << std::endl;
+	try
+	{
+		A temp = a[30];
+		std::cout << "key = " << temp.key << ", index = " << temp.index << std::endl;
+	}
+	catch (std::runtime_error a)
+	{
+		std::cout << a.what() << std::endl;
+	}
+
 	_getch();
 	return 0;
 }

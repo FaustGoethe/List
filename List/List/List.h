@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <exception>
 
 namespace SLL
 {
@@ -43,14 +44,15 @@ namespace SLL
 		int IndexDelete(const int);
 		size_t size() const;
 		void Encryption(const std::string&);
+		void Input_with_file(std::ofstream&, std::string&, std::string&);
+
 		inline list* get_begin() const
 		{
 			return begin;
 		}
 
 		friend std::ostream& operator<<(std::ostream&, List&);
-		void Input_with_file(std::ofstream&, std::string&, std::string&);
-		
+		A& operator[](const size_t);
 	};
 }
 #endif

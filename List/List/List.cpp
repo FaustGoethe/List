@@ -128,7 +128,7 @@ namespace SLL
 	List::~List()
 	{
 		if (begin == NULL)
-			throw Begin_is_zero();
+			return;
 
 		list* p = begin;
 		list* t;
@@ -271,7 +271,7 @@ namespace SLL
 		{
 			while (temp != NULL)
 			{
-				for (int i(0); i < key.size(); i++)
+				for (size_t i(0); i < key.size(); i++)
 					temp->a.key ^= key[i];
 				temp = temp->next;
 			}
@@ -284,14 +284,35 @@ namespace SLL
 
 		while (temp != NULL)
 		{
-			for (int i(0); i < key.size(); i++)
+			for (size_t i(0); i < key.size(); i++)
 				temp->a.key ^= key[i];
 			temp = temp->next;
 		}
 		Encryption_status = true;
 	}
-	
+	void List::Input_with_file(std::ofstream& fout, std::string& FileName, std::string& EncryptionKey)
+	{
+		if (begin == NULL)
+			throw List::Begin_is_zero();
 
+		list* print = begin;
+
+		fout.open(FileName);
+
+		fout << size() << std::endl;
+
+		for (size_t i(0); i < size() - 1; i++)
+		{
+			fout << print->a.key << std::endl;
+			print = print->next;
+		}
+		fout << print->a.key;
+
+		if (Encryption_status == true)
+			fout << std::endl << EncryptionKey;
+		std::cout << "Список успешно выведен в файл!" << std::endl;
+	}
+	
 	ld List::Averege() const
 	{
 		if (begin == NULL)
@@ -414,27 +435,23 @@ namespace SLL
 		os << std::endl;
 		return os;
 	}
-	void List::Input_with_file(std::ofstream& fout, std::string& FileName, std::string& EncryptionKey)
+	A& List::operator[](const size_t index)
 	{
-		if (begin == NULL)
-			throw List::Begin_is_zero();
-		
-		list* print = begin;
+		if (index > size() || index <= 0)
+			throw std::runtime_error("Ошибка доступа чтения памяти");
 
-		fout.open(FileName);
-
-		fout << size() << std::endl;
-
-		for(int i(0); i < size()-1; i++)
+		int temp = 1;
+		list* ret = begin;
+		for(;;)
 		{
-			fout << print->a.key << std::endl;
-			print = print->next;
+			if (temp == index)
+			{
+				return ret->a;
+			}
+			temp++;
+			ret = ret->next;
 		}
-		fout << print->a.key;
-
-		if (Encryption_status == true)
-			fout << std::endl <<  EncryptionKey;
-		std::cout << "Список успешно выведен в файл!" << std::endl;
+		
 	}
 }
 using namespace SLL;
