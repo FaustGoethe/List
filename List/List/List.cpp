@@ -128,7 +128,7 @@ namespace SLL
 	List::~List()
 	{
 		if (begin == NULL)
-			return;
+			throw Begin_is_zero();
 
 		list* p = begin;
 		list* t;
@@ -187,6 +187,8 @@ namespace SLL
 	}
 	void List::Delete(const size_t a)
 	{
+		if (begin == NULL)
+			throw Begin_is_zero();
 		list* t = begin;
 
 		if (t->a.key == a)
@@ -209,11 +211,12 @@ namespace SLL
 			t = t1;
 			t1 = t1->next;
 		}
+		throw Element_not_found();
 	}
 	int List::IndexDelete(const int value)
 	{
 		if (begin == NULL)
-			throw Element_not_found();
+			throw Begin_is_zero();
 		
 		int temp = 0;
 
@@ -242,11 +245,12 @@ namespace SLL
 			t = t1;
 			t1 = t1->next;
 		}
-		std::cout << "Элемент не найден\a\n" << std::endl;
 		throw Element_not_found();
 	}
 	size_t List::size() const
 	{
+		if (begin == NULL)
+			return 0;
 		list* temp = begin;
 		size_t result = 0;
 		while (temp)
@@ -259,7 +263,7 @@ namespace SLL
 	void List::Encryption(const std::string& key)
 	{
 		if (begin == NULL)
-			return;
+			throw Begin_is_zero();
 		
 		list* temp = begin;
 
@@ -292,6 +296,7 @@ namespace SLL
 	{
 		if (begin == NULL)
 			return 0;
+
 		list* temp = begin;
 
 		double i = 0;
@@ -308,6 +313,7 @@ namespace SLL
 	{
 		if (begin == NULL)
 			return 0;
+
 		list* temp = begin;
 		long double i = 1;
 
@@ -323,6 +329,7 @@ namespace SLL
 	{
 		if (begin == NULL)
 			return 0;
+
 		list* temp = begin;
 		size_t result = 0;
 		while (temp != NULL)
@@ -357,6 +364,8 @@ namespace SLL
 	}
 	void List::Indexation()const
 	{
+		if (begin == NULL)
+			return;
 		list* temp = begin;
 
 		for (size_t i(0); i < size(); i++)
@@ -368,7 +377,7 @@ namespace SLL
 
 	std::ostream& operator<<(std::ostream& os,  List& v)
 	{
-		List::list* print = v.begin;
+		SLL::list* print = v.begin;
 
 		while (print != NULL)
 		{
@@ -404,6 +413,28 @@ namespace SLL
 		os << "Минимальное значение списка: " << v.Minimum() << std::endl;
 		os << std::endl;
 		return os;
+	}
+	void List::Input_with_file(std::ofstream& fout, std::string& FileName, std::string& EncryptionKey)
+	{
+		if (begin == NULL)
+			throw List::Begin_is_zero();
+		
+		list* print = begin;
+
+		fout.open(FileName);
+
+		fout << size() << std::endl;
+
+		for(int i(0); i < size()-1; i++)
+		{
+			fout << print->a.key << std::endl;
+			print = print->next;
+		}
+		fout << print->a.key;
+
+		if (Encryption_status == true)
+			fout << std::endl <<  EncryptionKey;
+		std::cout << "Список успешно выведен в файл!" << std::endl;
 	}
 }
 using namespace SLL;

@@ -8,7 +8,9 @@ int main(int argc, char* argv[])
 	SLL::List a;
 	for (int i(1); i <= 5; i++)
 		a.Insert(i);
-	
+	std::ofstream fout;
+	a.Encryption("Hello");
+	a.Input_with_file(fout, (std::string)"text.txt", (std::string)"Hello");
 	_getch();
 	return 0;
 }
