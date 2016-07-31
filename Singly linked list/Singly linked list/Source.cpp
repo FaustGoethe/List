@@ -2,7 +2,6 @@
 #include <conio.h>
 #include <fstream>
 #include <string>
-#include "List.h"
 
 using namespace std;
 
