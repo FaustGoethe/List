@@ -13,25 +13,33 @@ namespace SLL
 	{
 		int key;
 		size_t index;
+
+		friend std::ostream& operator<<(std::ostream&,const A&);
+		inline A& operator=(size_t v)
+		{
+			key = v;
+			return *this;
+		}
 	};
 	struct list
 	{
 		A a;
 		list* next;
 	};
-
+	
 	class List
 	{	
 	private:
 		list* begin;
 		bool Encryption_status = false;
+		std::string key;
 	
 		ld Averege()const;
 		ld GeometryMean() const;
 		int Maximum()const;
 		int Minimum()const;
-		void Indexation() const;
-
+		void Indexation();
+	public:
 		class Element_not_found {};
 		class Begin_is_zero {};
 	public:
@@ -42,16 +50,24 @@ namespace SLL
 		void Insert(const size_t);
 		void Delete(const size_t);
 		int IndexDelete(const int);
+		List& AddEnd(size_t);
+		List& AddBegin(size_t);
 		size_t size() const;
-		void Encryption(const std::string&);
-		void Input_with_file(std::ofstream&, std::string&, std::string&);
+		List& Encryption();
+		void Output_with_file(const std::string&) const;
+		friend void Input_with_file(List&,const std::string&);
 
-		inline list* get_begin() const
+		inline void set_key(std::string v)
+		{	
+				key = v;
+		}
+		inline list* _begin() const
 		{
 			return begin;
 		}
+		list* _end() const;
 
-		friend std::ostream& operator<<(std::ostream&, List&);
+		friend std::ostream& operator<<(std::ostream&, const List&);
 		A& operator[](const size_t);
 	};
 }

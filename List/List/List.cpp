@@ -119,11 +119,14 @@ namespace SLL
 	List::List()
 	{
 		begin = NULL;
+		Encryption_status = false;
+		key = "";
 	}
 	List::List(const List& v)
 	{
 		begin = v.begin;
 		Encryption_status = v.Encryption_status;
+		key = v.key;
 	}
 	List::~List()
 	{
@@ -247,6 +250,42 @@ namespace SLL
 		}
 		throw Element_not_found();
 	}
+	List& List::AddEnd(size_t v)
+	{
+		list* ins = new list;
+		ins->a.key = v;
+		ins->next = NULL;
+
+		if (begin == NULL)
+		{
+			begin = ins;
+			Indexation();
+			return *this;
+		}
+
+		list* temp = begin;
+
+		while (1)
+		{
+			if (temp->next == NULL)
+			{
+				temp->next = ins;
+				Indexation();
+				return *this;
+			}
+			temp = temp->next;
+		}
+		
+	}
+	List& List::AddBegin(size_t v)
+	{
+		list* ins = new list;
+		ins->a.key = v;
+		ins->next = begin;
+		begin = ins;
+		Indexation();
+		return *this;
+	}
 	size_t List::size() const
 	{
 		if (begin == NULL)
@@ -260,11 +299,14 @@ namespace SLL
 		}
 		return result;
 	}
-	void List::Encryption(const std::string& key)
+	List& List::Encryption()
 	{
 		if (begin == NULL)
 			throw Begin_is_zero();
-		
+
+		if (key == "")
+			throw std::bad_alloc();
+
 		list* temp = begin;
 
 		if (Encryption_status == true)
@@ -276,11 +318,8 @@ namespace SLL
 				temp = temp->next;
 			}
 			Encryption_status = false;
-			return;
+			return *this;
 		}
-
-		if (key.size() < 5)
-			throw Error::Few_Elements(" мало значений в ключе шифрования");
 
 		while (temp != NULL)
 		{
@@ -289,12 +328,14 @@ namespace SLL
 			temp = temp->next;
 		}
 		Encryption_status = true;
+		return *this;
 	}
-	void List::Input_with_file(std::ofstream& fout, std::string& FileName, std::string& EncryptionKey)
+	void List::Output_with_file(const std::string& FileName)const
 	{
 		if (begin == NULL)
 			throw List::Begin_is_zero();
 
+		std::ofstream fout;
 		list* print = begin;
 
 		fout.open(FileName);
@@ -309,8 +350,34 @@ namespace SLL
 		fout << print->a.key;
 
 		if (Encryption_status == true)
-			fout << std::endl << EncryptionKey;
+			fout << std::endl << key;
 		std::cout << "Список успешно выведен в файл!" << std::endl;
+	}
+	void Input_with_file(List& result,const std::string& FileName)
+	{
+		std::ifstream fin;
+		fin.open(FileName);
+		
+		if (fin.is_open() != true)
+			throw std::runtime_error("Файл не открылся");
+
+		int List_size;
+
+		fin >> List_size;
+		
+		size_t AddValue = 0;
+
+		for (int i(0); i < List_size; i++)
+		{
+			fin >> AddValue;
+			result.Insert(AddValue);
+		}
+		if (!fin.eof())
+		{
+			fin >> result.key;
+			result.Encryption_status = true;
+		}
+		result.Indexation();
 	}
 	
 	ld List::Averege() const
@@ -383,7 +450,7 @@ namespace SLL
 			result = 0;
 		return result;
 	}
-	void List::Indexation()const
+	void List::Indexation()
 	{
 		if (begin == NULL)
 			return;
@@ -395,10 +462,24 @@ namespace SLL
 			temp = temp->next;
 		}
 	}
-
-	std::ostream& operator<<(std::ostream& os,  List& v)
+	
+	list* List::_end() const
 	{
-		SLL::list* print = v.begin;
+		if (begin == NULL)
+			return begin;
+
+		list* temp = begin;
+		while (1)
+		{
+			if (temp->next == NULL)
+				return temp;
+			temp = temp->next;
+		}
+	}
+
+	std::ostream& operator<<(std::ostream& os,const  List& v)
+	{
+		SLL::list* print = v._begin();
 
 		while (print != NULL)
 		{
@@ -407,7 +488,7 @@ namespace SLL
 		}
 		os << "NULL" << std::endl;
 
-		print = v.begin;
+		print = v._begin();
 
 		while (print != NULL)
 		{
@@ -438,7 +519,7 @@ namespace SLL
 	A& List::operator[](const size_t index)
 	{
 		if (index > size() || index <= 0)
-			throw std::runtime_error("Ошибка доступа чтения памяти");
+			throw std::runtime_error("Ошибка доступа чтения памяти\a");
 
 		int temp = 1;
 		list* ret = begin;
@@ -453,5 +534,13 @@ namespace SLL
 		}
 		
 	}
+
+	std::ostream& operator<<(std::ostream& os,const A& v)
+	{
+		os << "Key = " << v.key << std::endl;
+		os << "Index = " << v.index << std::endl;
+		return os;
+	}
+
 }
 using namespace SLL;
