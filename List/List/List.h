@@ -30,10 +30,15 @@ namespace SLL
 	class List
 	{	
 	private:
+		struct Encryption
+		{
+			bool Encryption_status = false;
+			std::string key;
+
+		};
 		list* begin;
-		bool Encryption_status = false;
-		std::string key;
-	
+		Encryption status;
+
 		ld Averege()const;
 		ld GeometryMean() const;
 		int Maximum()const;
@@ -55,12 +60,10 @@ namespace SLL
 		size_t size() const;
 		List& Encryption();
 		void Output_with_file(const std::string&) const;
-		friend void Input_with_file(List&,const std::string&);
+		size_t KeyFind(size_t);
+	
+		friend void Input_with_file(List&, const std::string&);
 
-		inline void set_key(std::string v)
-		{	
-				key = v;
-		}
 		inline list* _begin() const
 		{
 			return begin;
@@ -68,6 +71,7 @@ namespace SLL
 		list* _end() const;
 
 		friend std::ostream& operator<<(std::ostream&, const List&);
+		friend std::istream& operator>>(std::istream&, List&);
 		A& operator[](const size_t);
 	};
 }

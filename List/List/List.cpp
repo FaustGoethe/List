@@ -119,14 +119,14 @@ namespace SLL
 	List::List()
 	{
 		begin = NULL;
-		Encryption_status = false;
-		key = "";
+		status.Encryption_status = false;
+		status.key = "";
 	}
 	List::List(const List& v)
 	{
 		begin = v.begin;
-		Encryption_status = v.Encryption_status;
-		key = v.key;
+		status.Encryption_status = v.status.Encryption_status;
+		status.key = v.status.key;
 	}
 	List::~List()
 	{
@@ -304,30 +304,30 @@ namespace SLL
 		if (begin == NULL)
 			throw Begin_is_zero();
 
-		if (key == "")
+		if (status.key == "")
 			throw std::bad_alloc();
 
 		list* temp = begin;
 
-		if (Encryption_status == true)
+		if (status.Encryption_status == true)
 		{
 			while (temp != NULL)
 			{
-				for (size_t i(0); i < key.size(); i++)
-					temp->a.key ^= key[i];
+				for (size_t i(0); i < status.key.size(); i++)
+					temp->a.key ^= status.key[i];
 				temp = temp->next;
 			}
-			Encryption_status = false;
+			status.Encryption_status = false;
 			return *this;
 		}
 
 		while (temp != NULL)
 		{
-			for (size_t i(0); i < key.size(); i++)
-				temp->a.key ^= key[i];
+			for (size_t i(0); i < status.key.size(); i++)
+				temp->a.key ^= status.key[i];
 			temp = temp->next;
 		}
-		Encryption_status = true;
+		status.Encryption_status = true;
 		return *this;
 	}
 	void List::Output_with_file(const std::string& FileName)const
@@ -349,8 +349,8 @@ namespace SLL
 		}
 		fout << print->a.key;
 
-		if (Encryption_status == true)
-			fout << std::endl << key;
+		if (status.Encryption_status == true)
+			fout << std::endl << status.key;
 		std::cout << "Список успешно выведен в файл!" << std::endl;
 	}
 	void Input_with_file(List& result,const std::string& FileName)
@@ -370,14 +370,21 @@ namespace SLL
 		for (int i(0); i < List_size; i++)
 		{
 			fin >> AddValue;
-			result.Insert(AddValue);
+			result.AddEnd(AddValue);
 		}
 		if (!fin.eof())
 		{
-			fin >> result.key;
-			result.Encryption_status = true;
+			fin >> result.status.key;
+			result.status.Encryption_status = true;
 		}
 		result.Indexation();
+	}
+	size_t List::KeyFind(size_t key)
+	{
+		for (size_t i(1); i <= size(); i++)
+			if ((*this)[i].key == key)
+				return (*this)[i].index;
+		return 0;
 	}
 	
 	ld List::Averege() const
@@ -498,7 +505,7 @@ namespace SLL
 		os << "NULL" << std::endl;
 
 		os << "Статус списка: ";
-		if (v.Encryption_status == true)
+		if (v.status.Encryption_status == true)
 		{
 			os << "зашифрован" << std::endl;
 			return os;
@@ -514,6 +521,17 @@ namespace SLL
 		os << "Максимальное значение списка: " << v.Maximum() << std::endl;
 		os << "Минимальное значение списка: " << v.Minimum() << std::endl;
 		os << std::endl;
+		return os;
+	}
+	std::istream& operator>>(std::istream& os, List& v)
+	{
+		if (v.begin == NULL)
+			return os;
+		for (size_t i(0); i < v.size(); i++)
+		{
+			std::cout << "Введите значение " << i + 1 << " элемента списка: ";
+			os >> v[i+1].key;
+		}
 		return os;
 	}
 	A& List::operator[](const size_t index)
