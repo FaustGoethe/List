@@ -1,6 +1,7 @@
 #pragma once
 #ifndef _LIST_H
 #define _LIST_H
+#define BAD_BEGIN "Bad begin"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -9,6 +10,7 @@
 namespace SLL
 {
 	typedef long double ld;
+
 	struct A
 	{
 		int key;
@@ -26,16 +28,16 @@ namespace SLL
 		A a;
 		list* next;
 	};
-	
-	class List
-	{	
-	private:
-		struct Encryption
+	struct Encryption
 		{
 			bool Encryption_status = false;
 			std::string key;
 
 		};
+	
+	class List
+	{	
+	private:
 		list* begin;
 		Encryption status;
 
@@ -44,9 +46,7 @@ namespace SLL
 		int Maximum()const;
 		int Minimum()const;
 		void Indexation();
-	public:
-		class Element_not_found {};
-		class Begin_is_zero {};
+		A* Array();
 	public:
 		List();
 		List(const List&);
@@ -55,23 +55,28 @@ namespace SLL
 		void Insert(const size_t);
 		void Delete(const size_t);
 		int IndexDelete(const int);
-		List& AddEnd(size_t);
-		List& AddBegin(size_t);
+		List& AddEnd(const size_t);
+		List& AddBegin(const size_t);
 		size_t size() const;
 		List& Encryption();
 		void Output_with_file(const std::string&) const;
-		size_t KeyFind(size_t);
-	
-		friend void Input_with_file(List&, const std::string&);
+		size_t KeyFind(const size_t);
 
+		List& KeySort();
+		List& keySortMin();
+		List& IndexSort();
+		List& IndexSortMin();
+	
 		inline list* _begin() const
 		{
 			return begin;
 		}
 		list* _end() const;
 
+		friend void Input_with_file(List&, const std::string&);
 		friend std::ostream& operator<<(std::ostream&, const List&);
 		friend std::istream& operator>>(std::istream&, List&);
+
 		A& operator[](const size_t);
 	};
 }

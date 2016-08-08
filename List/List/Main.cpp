@@ -7,11 +7,12 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	List c;
-	for (int i(1); i <= 5; i++)
+	for (int i(0); i <= 5; i++)
 		c.AddEnd(i + 1);
 
-	std::cout << c;
-	std::cout << c.IndexFind(2);
+	std::cout << c << std::endl;
+	c.KeySort();
+	std::cout << c.KeySort();;
 	_getch();
 	return 0;
 }

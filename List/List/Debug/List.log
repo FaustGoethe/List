@@ -1,7 +1,3 @@
 ﻿  List.cpp
-  Создание кода...
-  Компиляция...
-  Main.cpp
-c:\users\кирилл\desktop\projects\list\list\main.cpp(14): error C2039: IndexFind: не является членом "SLL::List"
-  c:\users\кирилл\desktop\projects\list\list\list.h(31): note:  см. объявление "SLL::List"
-  Создание кода...
+  List.vcxproj -> C:\Users\Кирилл\Desktop\Projects\List\Debug\List.exe
+  List.vcxproj -> C:\Users\Кирилл\Desktop\Projects\List\Debug\List.pdb (Full PDB)
