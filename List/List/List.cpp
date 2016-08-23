@@ -437,23 +437,9 @@ namespace SLL
 		return result;
 	}
 	
-	list* List::_end() const
-	{
-		if (begin == NULL)
-			return begin;
-
-		list* temp = begin;
-		while (1)
-		{
-			if (temp->next == NULL)
-				return temp;
-			temp = temp->next;
-		}
-	}
-
 	std::ostream& operator<<(std::ostream& os,const  List& v)
 	{
-		SLL::list* print = v._begin();
+		SLL::list* print = v.begin;
 
 		while (print != NULL)
 		{
@@ -462,7 +448,7 @@ namespace SLL
 		}
 		os << "NULL" << std::endl;
 
-		print = v._begin();
+		print = v.begin;
 
 		while (print != NULL)
 		{
@@ -523,9 +509,9 @@ namespace SLL
 	std::ostream& operator<<(std::ostream& os,const A& v)
 	{
 		os << "Key = " << v.key << std::endl;
-		os << "Index = " << v.index << std::endl;
 		return os;
 	}
+
 
 }
 using namespace SLL;

@@ -11,8 +11,7 @@ int main(int argc, char* argv[])
 		c.AddEnd(i + 1);
 
 	std::cout << c << std::endl;
-	c.KeySort();
-	std::cout << c.KeySort();;
+	std::cin >> c[3].key;
 	_getch();
 	return 0;
 }

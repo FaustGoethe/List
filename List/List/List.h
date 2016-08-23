@@ -66,12 +66,6 @@ namespace SLL
 		List& keySortMin();
 		List& IndexSort();
 		List& IndexSortMin();
-	
-		inline list* _begin() const
-		{
-			return begin;
-		}
-		list* _end() const;
 
 		friend void Input_with_file(List&, const std::string&);
 		friend std::ostream& operator<<(std::ostream&, const List&);
