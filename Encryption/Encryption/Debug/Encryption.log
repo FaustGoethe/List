@@ -1,7 +1,0 @@
-﻿  rsa.cpp
-  main.cpp
-c:\users\кирилл\downloads\src\main.cpp(10): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  hugeint.cpp
-  Создание кода...
-  Encryption.vcxproj -> C:\Users\Кирилл\Desktop\Projects\Encryption\Debug\Encryption.exe
-  Encryption.vcxproj -> C:\Users\Кирилл\Desktop\Projects\Encryption\Debug\Encryption.pdb (Full PDB)
