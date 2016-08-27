@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
 
 	std::cout << c << std::endl;
 	std::cin >> c[3].key;
+	std::cout << c << std::endl;
 	_getch();
 	return 0;
 }

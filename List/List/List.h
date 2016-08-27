@@ -11,36 +11,30 @@ namespace SLL
 {
 	typedef long double ld;
 
-	struct A
+	
+	class List
+	{	
+	public:
+		struct A
 	{
 		int key;
 		size_t index;
 
-		friend std::ostream& operator<<(std::ostream&,const A&);
+		friend std::ostream& operator<<(std::ostream&, A&);
 		inline A& operator=(size_t v)
 		{
 			key = v;
 			return *this;
 		}
 	};
-	struct list
+	    struct list
 	{
 		A a;
 		list* next;
 	};
-	struct Encryption
-		{
-			bool Encryption_status = false;
-			std::string key;
-
-		};
-	
-	class List
-	{	
 	private:
 		list* begin;
-		Encryption status;
-
+		
 		ld Averege()const;
 		ld GeometryMean() const;
 		int Maximum()const;
@@ -58,7 +52,7 @@ namespace SLL
 		List& AddEnd(const size_t);
 		List& AddBegin(const size_t);
 		size_t size() const;
-		List& Encryption();
+
 		void Output_with_file(const std::string&) const;
 		size_t KeyFind(const size_t);
 

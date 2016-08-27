@@ -5,14 +5,10 @@ namespace SLL
 	List::List()
 	{
 		begin = NULL;
-		status.Encryption_status = false;
-		status.key = "";
 	}
 	List::List(const List& v)
 	{
 		begin = v.begin;
-		status.Encryption_status = v.status.Encryption_status;
-		status.key = v.status.key;
 	}
 	List::~List()
 	{
@@ -185,37 +181,7 @@ namespace SLL
 		}
 		return result;
 	}
-	List& List::Encryption()
-	{
-		if (begin == NULL)
-			throw std::runtime_error(BAD_BEGIN);
 
-		if (status.key == "")
-			throw std::bad_alloc();
-
-		list* temp = begin;
-
-		if (status.Encryption_status == true)
-		{
-			while (temp != NULL)
-			{
-				for (size_t i(0); i < status.key.size(); i++)
-					temp->a.key ^= status.key[i];
-				temp = temp->next;
-			}
-			status.Encryption_status = false;
-			return *this;
-		}
-
-		while (temp != NULL)
-		{
-			for (size_t i(0); i < status.key.size(); i++)
-				temp->a.key ^= status.key[i];
-			temp = temp->next;
-		}
-		status.Encryption_status = true;
-		return *this;
-	}
 	void List::Output_with_file(const std::string& FileName)const
 	{
 		if (begin == NULL)
@@ -235,8 +201,6 @@ namespace SLL
 		}
 		fout << print->a.key;
 
-		if (status.Encryption_status == true)
-			fout << std::endl << status.key;
 		std::cout << "Список успешно выведен в файл!" << std::endl;
 	}
 	void Input_with_file(List& result,const std::string& FileName)
@@ -258,11 +222,7 @@ namespace SLL
 			fin >> AddValue;
 			result.AddEnd(AddValue);
 		}
-		if (!fin.eof())
-		{
-			fin >> result.status.key;
-			result.status.Encryption_status = true;
-		}
+	
 		result.Indexation();
 	}
 	size_t List::KeyFind(const size_t key)
@@ -424,7 +384,7 @@ namespace SLL
 			temp = temp->next;
 		}
 	}
-	A* List::Array()
+	List::A* List::Array()
 	{
 		A* result = new A[size()];
 		list* temp = begin;
@@ -439,7 +399,7 @@ namespace SLL
 	
 	std::ostream& operator<<(std::ostream& os,const  List& v)
 	{
-		SLL::list* print = v.begin;
+		SLL::List::list* print = v.begin;
 
 		while (print != NULL)
 		{
@@ -457,14 +417,6 @@ namespace SLL
 		}
 		os << "NULL" << std::endl;
 
-		os << "Статус списка: ";
-		if (v.status.Encryption_status == true)
-		{
-			os << "зашифрован" << std::endl;
-			return os;
-		}
-		else
-			os << "не зашифрован" << std::endl;
 		os << std::endl;
 		os.setf(std::ios_base::fixed, std::ios_base::floatfield);
 		os.precision(0);
@@ -487,13 +439,15 @@ namespace SLL
 		}
 		return os;
 	}
-	A& List::operator[](const size_t index)
+
+	List::A& List::operator[](const size_t index)
 	{
 		if (index > size() || index <= 0)
 			throw std::runtime_error("Ошибка доступа чтения памяти\a");
 
 		int temp = 1;
-		list* ret = begin;
+		list* ret = begin; // Возвращаемый экземпляр структуры
+
 		for(;;)
 		{
 			if (temp == index)
@@ -503,12 +457,10 @@ namespace SLL
 			temp++;
 			ret = ret->next;
 		}
-		
 	}
-
-	std::ostream& operator<<(std::ostream& os,const A& v)
+	std::ostream& operator<<(std::ostream& os, List::A& v)
 	{
-		os << "Key = " << v.key << std::endl;
+		os << v.key << std::endl;
 		return os;
 	}
 
