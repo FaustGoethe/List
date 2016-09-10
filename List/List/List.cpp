@@ -27,7 +27,7 @@ namespace SLL
 		begin = NULL;
 	}
 
-	void List::Insert(const size_t a)
+	List& List::Insert(const size_t a)
 	{
 		list* ins = new list;
 		ins->a.key = a;
@@ -38,7 +38,7 @@ namespace SLL
 		{
 			begin = ins;
 			Indexation();
-			return;
+			return *this;
 		}
 
 		if (ins->a.key <= t->a.key)
@@ -46,7 +46,7 @@ namespace SLL
 			ins->next = t;
 			begin = ins;
 			Indexation();
-			return;
+			return *this;
 		}
 		list* t1 = t->next;
 		while (t != NULL)
@@ -55,7 +55,7 @@ namespace SLL
 			{
 				t->next = ins;
 				Indexation();
-				return;
+				return *this;
 			}
 
 			if (ins->a.key >= t->a.key && ins->a.key <= t1->a.key)
@@ -63,14 +63,14 @@ namespace SLL
 				t->next = ins;
 				ins->next = t1;
 				Indexation();
-				return;
+				return *this;
 			}
 
 			t = t->next;
 			t1 = t->next;
 		}
 	}
-	void List::Delete(const size_t a)
+	List& List::Delete(const size_t a)
 	{
 		if (begin == NULL)
 			throw std::runtime_error(BAD_BEGIN);
@@ -81,7 +81,7 @@ namespace SLL
 			begin = t->next;
 			delete t;
 			Indexation();
-			return;
+			return *this;
 		}
 		list*  t1 = t->next;
 		while (t1 != NULL)
@@ -91,7 +91,7 @@ namespace SLL
 				t->next = t1->next;
 				delete t1;
 				Indexation();
-				return;
+				return *this;
 			}
 			t = t1;
 			t1 = t1->next;
@@ -440,7 +440,7 @@ namespace SLL
 		return os;
 	}
 
-	List::A& List::operator[](const size_t index)
+	List::A& List::operator[](const size_t index) 
 	{
 		if (index > size() || index <= 0)
 			throw std::runtime_error("Ошибка доступа чтения памяти\a");
@@ -463,7 +463,6 @@ namespace SLL
 		os << v.key << std::endl;
 		return os;
 	}
-
 
 }
 using namespace SLL;

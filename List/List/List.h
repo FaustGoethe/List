@@ -46,8 +46,8 @@ namespace SLL
 		List(const List&);
 		~List();
 
-		void Insert(const size_t);
-		void Delete(const size_t);
+		List& Insert(const size_t);
+		List& Delete(const size_t);
 		int IndexDelete(const int);
 		List& AddEnd(const size_t);
 		List& AddBegin(const size_t);
