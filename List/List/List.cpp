@@ -301,6 +301,23 @@ namespace SLL
 		}
 		return *this;
 	}
+
+	List& List::set_key(std::string str)
+	{
+		if (status.Encpt_status == false)
+		{
+			status.key = str;
+			return *this;
+		}
+
+		if (status.Encpt_status == true)
+		{
+			Encryption(*this);
+			status.Encpt_status = false;
+			status.key = str;
+			return *this;
+		}
+	}
 	
 	ld List::Averege() const
 	{
@@ -438,6 +455,35 @@ namespace SLL
 			os >> v[i+1].key;
 		}
 		return os;
+	}
+	void Encryption(List& v)
+	{
+		if (v.begin == NULL)
+			throw std::runtime_error("Bad begin");
+
+		if (v.status.key == "")
+			throw std::runtime_error("Ключ шифрования пуст!");
+
+		List::list* temp = v.begin;
+
+		if (v.status.Encpt_status == true)
+		{
+			while (temp != NULL)
+			{
+				for (size_t i(0); i < v.status.key.size(); i++)
+					temp->a.key ^= v.status.key[i];
+				temp = temp->next;
+			}
+			v.status.Encpt_status = false;
+		}
+
+		while (temp != NULL)
+		{
+			for (size_t i(0); i < v.status.key.size(); i++)
+				temp->a.key ^= v.status.key[i];
+			temp = temp->next;
+		}
+		v.status.Encpt_status = true;
 	}
 
 	List::A& List::operator[](const size_t index) 

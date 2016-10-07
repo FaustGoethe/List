@@ -1,7 +1,3 @@
 ﻿  Main.cpp
-  List.cpp
-  Создание кода...
-c:\users\кирилл\desktop\c++\list\list\list\list.cpp(72): warning C4715: SLL::List::Insert: значение возвращается не при всех путях выполнения
-  LINK : не найден или не выполнена сборка C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.exe при последней инкрементной компоновке; выполняется полная компоновка
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.exe
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.pdb (Full PDB)

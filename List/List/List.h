@@ -11,7 +11,11 @@ namespace SLL
 {
 	typedef long double ld;
 
-	
+	struct status
+	{
+		bool Encpt_status = false;
+		std::string key = "";
+	};
 	class List
 	{	
 	public:
@@ -32,6 +36,7 @@ namespace SLL
 		A a;
 		list* next;
 	};
+		status status;
 	private:
 		list* begin;
 		
@@ -54,17 +59,26 @@ namespace SLL
 		size_t size() const;
 
 		void Output_with_file(const std::string&) const;
-		size_t KeyFind(const size_t);
+		size_t KeyFind(const size_t); // Поиск по значению
+
+		inline list* get_begin() // Вернуть начало
+		{
+			return begin;
+		}
+
+		List& set_key(std::string);
 
 		List& KeySort();
 		List& keySortMin();
 		List& IndexSort();
 		List& IndexSortMin();
 
-		friend void Input_with_file(List&, const std::string&);
 		friend std::ostream& operator<<(std::ostream&, const List&);
 		friend std::istream& operator>>(std::istream&, List&);
 
+		friend void Input_with_file(List&, const std::string&);
+		friend void Encryption(List&);
+		
 		A& operator[](const size_t);
 	};
 }

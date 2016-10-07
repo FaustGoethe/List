@@ -3,16 +3,16 @@
 #include "List.h"
 #include "Menu.h"
 
+using std::cout;
+using std::endl;
+
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	List c;
-	for (int i(0); i <= 5; i++)
-		c.AddEnd(i + 1);
-
-	std::cout << c << std::endl;
-	std::cin >> c[3].key;
-	std::cout << c << std::endl;
+	for (int i(1); i <= 5; i++)
+		c.AddEnd(i);
+	
 	_getch();
 	return 0;
 }
