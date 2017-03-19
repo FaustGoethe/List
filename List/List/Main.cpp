@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <list>
 #include "List.h"
 #include "Menu.h"
 
@@ -22,7 +23,7 @@ void initList(List& obj)
 			while (cin.get() != '/n');
 			cout << "Введите значение " << i << " элемента списка";
 		}
-		obj.AddEnd(addedElem);
+		obj.push_back(addedElem);
 	}
 }
 
@@ -42,10 +43,10 @@ void Distribution(List &obj)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	List c;
+	/*List c;
 	initList(c);
-	cout << c;
-	
+	cout << c;*/
+
 	_getch();
 	return 0;
 }

@@ -40,10 +40,10 @@ namespace SLL
 	private:
 		list* begin;
 		
-		ld Averege()const;
+		double averege_value()const; // Среднее арифметическо значение списка
 		ld GeometryMean() const;
-		int Maximum()const;
-		int Minimum()const;
+		int maximum_value()const; // максимальное значение списка
+		int minimum_value()const; // минимальное значение списка
 		void Indexation();
 		A* Array();
 	public:
@@ -51,11 +51,11 @@ namespace SLL
 		List(const List&);
 		~List();
 
-		List& Insert(const size_t);
-		List& Delete(const size_t);
-		int IndexDelete(const int);
-		List& AddEnd(const size_t);
-		List& AddBegin(const size_t);
+		List& Insert(const size_t); // Добавка элемента n значения в список
+		List& Delete(const size_t); // Удаление элемента из списка по значению
+		int IndexDelete(const int); // Удаление элемента из списка по индексу 
+		List& push_back(const size_t); // Добавка элемента в конец списка
+		List& push_front(const size_t); // Добавка элемента в начало списка
 		size_t size() const;
 
 		void Output_with_file(const std::string&) const;

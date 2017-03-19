@@ -132,7 +132,7 @@ namespace SLL
 		}
 		throw std::runtime_error("Element not found");
 	}
-	List& List::AddEnd(const size_t v)
+	List& List::push_back(const size_t v)
 	{
 		list* ins = new list;
 		ins->a.key = v;
@@ -159,7 +159,7 @@ namespace SLL
 		}
 		
 	}
-	List& List::AddBegin(const size_t v)
+	List& List::push_front(const size_t v)
 	{
 		list* ins = new list;
 		ins->a.key = v;
@@ -220,7 +220,7 @@ namespace SLL
 		for (int i(0); i < List_size; i++)
 		{
 			fin >> AddValue;
-			result.AddEnd(AddValue);
+			result.push_back(AddValue);
 		}
 	
 		result.Indexation();
@@ -348,7 +348,7 @@ namespace SLL
 		v.status.Encpt_status = true;
 	}
 	
-	ld List::Averege() const
+	double List::averege_value() const
 	{
 		if (begin == NULL)
 			return 0;
@@ -381,7 +381,7 @@ namespace SLL
 
 		return sqrt(i);
 	}
-	int List::Maximum()const
+	int List::maximum_value()const
 	{
 		if (begin == NULL)
 			return 0;
@@ -398,7 +398,7 @@ namespace SLL
 		}
 		return result;
 	}
-	int List::Minimum()const
+	int List::minimum_value()const
 	{
 		if (begin == NULL)
 			return 0;
@@ -467,10 +467,10 @@ namespace SLL
 		os.setf(std::ios_base::fixed, std::ios_base::floatfield);
 		os.precision(0);
 
-		os << "Среднее арифметическое списка: " << v.Averege() << std::endl;
+		os << "Среднее арифметическое списка: " << v.averege_value() << std::endl;
 		os << "Среднее геометрическое списка: " << v.GeometryMean() << std::endl;
-		os << "Максимальное значение списка: " << v.Maximum() << std::endl;
-		os << "Минимальное значение списка: " << v.Minimum() << std::endl;
+		os << "Максимальное значение списка: " << v.maximum_value() << std::endl;
+		os << "Минимальное значение списка: " << v.minimum_value() << std::endl;
 		os << std::endl;
 		return os;
 	}
