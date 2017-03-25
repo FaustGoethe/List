@@ -1,3 +1,8 @@
-﻿  Main.cpp
+﻿  List.cpp
+  Создание кода...
+c:\users\кирилл\desktop\c++\list\list\list\list.cpp(69): warning C4715: SLL::List::push: значение возвращается не при всех путях выполнения
+  Компиляция...
+  Main.cpp
+  Создание кода...
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.exe
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.pdb (Partial PDB)
