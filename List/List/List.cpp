@@ -11,12 +11,26 @@ namespace SLL
 	List::~List(){
 		if (begin == NULL)
 			return;
+		std::ofstream fout;
+		list* print = begin;
+		std::string file_name;
+
+		std::cout << "Enter file name: ";
+		std::getline(std::cin, file_name);
+		fout.open(file_name);
+
+		fout << size() << std::endl;
+
+		for (size_t i(0); i < size() - 1; i++) {
+			fout << print->value.key << std::endl;
+			print = print->next;
+		}
+		fout << print->value.key;
 
 		list* p = begin;
 		list* t;
 
-		while (p)
-		{
+		while (p){
 			t = p;
 			p = p->next;
 			delete t;
@@ -30,15 +44,13 @@ namespace SLL
 		ins->next = NULL;
 
 		list* t = begin;
-		if (begin == NULL)
-		{
+		if (begin == NULL){
 			ins->value.index = 1;
 			begin = ins;
 			return *this;
 		}
 
-		if (ins->value.key <= t->value.key)
-		{
+		if (ins->value.key <= t->value.key){
 			ins->next = t;
 			begin = ins;
 			Indexation();
@@ -46,17 +58,15 @@ namespace SLL
 		}
 
 		list* t1 = t->next;
-		while (t != NULL)
-		{
-			if (t->next == NULL)
-			{
+		while (t != NULL){
+
+			if (t->next == NULL){
 				t->next = ins;
 				Indexation();
 				return *this;
 			}
 
-			if (ins->value.key >= t->value.key && ins->value.key <= t1->value.key)
-			{
+			if (ins->value.key >= t->value.key && ins->value.key <= t1->value.key){
 				t->next = ins;
 				ins->next = t1;
 				Indexation();
@@ -69,7 +79,7 @@ namespace SLL
 	}
 	List& List::remove(const size_t remove_value){
 		if (begin == NULL)
-			throw std::runtime_error("Can't delete the element, because begin == null\a");
+			throw std::runtime_error("The element can't be remove, because begin == null\a");
 
 		list* t = begin;
 
@@ -97,15 +107,14 @@ namespace SLL
 	}
 	int List::remove_at_index(const size_t remove_value){
 		if (begin == NULL)
-			throw std::runtime_error("Can't delete the element, because begin == null\a");
+			throw std::runtime_error("The element can't be remove, because begin == null\a");
 		
 		int temp = 0;
 
 		list* t = begin;
 		list*  t1 = t->next;
 
-		if (t->value.index == remove_value)
-		{
+		if (t->value.index == remove_value){
 			temp = t->value.key;
 			begin = t->next;
 			delete t;
@@ -113,10 +122,8 @@ namespace SLL
 			return temp;
 		}
 
-		while (t1 != NULL)
-		{
-			if (t1->value.index == remove_value)
-			{
+		while (t1 != NULL){
+			if (t1->value.index == remove_value){
 				temp = t1->value.key;
 				t->next = t1->next;
 				delete t1;
@@ -133,8 +140,7 @@ namespace SLL
 		ins->value.key = push_value;
 		ins->next = NULL;
 
-		if (begin == NULL)
-		{
+		if (begin == NULL){
 			begin = ins;
 			Indexation();
 			return *this;
@@ -142,10 +148,8 @@ namespace SLL
 
 		list* temp = begin;
 
-		while (1)
-		{
-			if (temp->next == NULL)
-			{
+		for(;;) {
+			if (temp->next == NULL){
 				temp->next = ins;
 				Indexation();
 				return *this;
@@ -175,9 +179,9 @@ namespace SLL
 		return result;
 	}
 
-	void List::Output_with_file(const std::string& FileName)const{
+	void List::fout(const std::string& FileName)const{
 		if (begin == NULL)
-			throw std::runtime_error("Can't delete the element, because begin == null\a");
+			throw std::runtime_error("This list can't be output, because begin == null\a");
 
 		std::ofstream fout;
 		list* print = begin;
@@ -186,16 +190,13 @@ namespace SLL
 
 		fout << size() << std::endl;
 
-		for (size_t i(0); i < size() - 1; i++)
-		{
+		for (size_t i(0); i < size() - 1; i++){
 			fout << print->value.key << std::endl;
 			print = print->next;
 		}
 		fout << print->value.key;
-
-		std::cout << "Список успешно выведен в файл!" << std::endl;
 	}
-	void Input_with_file(List& result, const std::string& FileName){
+	List& List::fin(const std::string& FileName){
 		std::ifstream fin;
 		fin.open(FileName);
 		
@@ -206,15 +207,14 @@ namespace SLL
 
 		fin >> List_size;
 		
-		size_t AddValue = 0;
+		int AddValue = 0;
 
-		for (int i(0); i < List_size; i++)
-		{
+		for (int i(0); i < List_size; i++){
 			fin >> AddValue;
-			result.push_back(AddValue);
+			push_back(AddValue);
 		}
-	
-		result.Indexation();
+		Indexation();
+		return *this;
 	}
 	size_t List::KeyFind(const size_t key){
 		for (size_t i(1); i <= size(); i++)

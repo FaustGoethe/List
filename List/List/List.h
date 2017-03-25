@@ -22,8 +22,8 @@ namespace SLL
 
 			friend std::ostream& operator<<(std::ostream&, content&);
 			inline content& operator=(size_t v){
-			key = v;
-			return *this;
+				key = v;
+				return *this;
 		}
 		};
 	    struct list
@@ -31,16 +31,11 @@ namespace SLL
 			content value;
 			list* next;
 		};
-
 	private:
-		list* begin;
+		list* begin; // Указатель на начало
 		
-		double averege()const; // Среднее арифметическо значение списка
-		int maximum_value()const; // максимальное значение списка
-		int minimum_value()const; // минимальное значение списка
 		void Indexation(); // Присвоение каждому элементу списка индекса
 		content* Array(); // Представление списка в виде массива
-
 	public:
 		List();
 		List(const List&);
@@ -53,7 +48,11 @@ namespace SLL
 		List& push_front(const size_t); // Добавка элемента в начало списка
 		size_t size() const; // Размерность списка
 
-		void Output_with_file(const std::string&) const;
+		double averege()const; // Среднее арифметическо значение списка
+		int maximum_value()const; // максимальное значение списка
+		int minimum_value()const; // минимальное значение списка
+
+		void fout(const std::string&) const;
 		size_t KeyFind(const size_t); // Поиск по значению
 
 		inline list* _begin(){ // Вернуть начало
@@ -68,7 +67,7 @@ namespace SLL
 		friend std::ostream& operator<<(std::ostream&, const List&);
 		friend std::istream& operator>>(std::istream&, List&);
 
-		friend void Input_with_file(List&, const std::string&);
+		List& fin(const std::string&);
 		
 		content& operator[](const size_t);
 	};

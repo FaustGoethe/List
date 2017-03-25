@@ -43,10 +43,9 @@ void Distribution(List &obj)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	/*List c;
-	initList(c);
-	cout << c;*/
-
+	List a;
+	a.fin("Bug.txt");
+	std::cout << a;
 	_getch();
 	return 0;
 }
