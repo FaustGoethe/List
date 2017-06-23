@@ -39,9 +39,10 @@ namespace SLL
 	public:
 		List();
 		List(const List&);
+		List(const int*,const int);
 		~List();
 
-		List& push(const size_t); // Добавка элемента n значения в список
+		List& push(const int); // Добавка элемента n значения в список
 		List& remove(const size_t); // Удаление элемента из списка по значению
 		int remove_at_index(const size_t); // Удаление элемента из списка по индексу 
 		List& push_back(const size_t); // Добавка элемента в конец списка
@@ -55,9 +56,10 @@ namespace SLL
 		void fout(const std::string&) const;
 		size_t KeyFind(const size_t); // Поиск по значению
 
-		inline list* _begin(){ // Вернуть начало
+		inline list* _begin()const{ // Вернуть начало
 			return begin;
 		}
+		list* _end()const;
 
 		List& key_sort_bubble(); // Сортировка пузырьком по значению
 		List& key_sort_reverse_bubble(); // Обратная сортировка пузырьком по значению
@@ -69,7 +71,8 @@ namespace SLL
 
 		List& fin(const std::string&);
 		
-		content& operator[](const size_t);
+		content& operator[](size_t);
+		content& operator[](const size_t) const;
 	};
 }
 #endif

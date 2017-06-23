@@ -8,10 +8,15 @@ namespace SLL
 	List::List(const List& v){
 		begin = v.begin;
 	}
+	List::List(const int* arr, const int size) {
+		begin = NULL;
+		for (int i(0); i < size; i++)
+			push_front(arr[i]);
+	}
 	List::~List(){
 		if (begin == NULL)
 			return;
-		std::ofstream fout;
+		/*std::ofstream fout;
 		list* print = begin;
 		std::string file_name;
 
@@ -25,7 +30,7 @@ namespace SLL
 			fout << print->value.key << std::endl;
 			print = print->next;
 		}
-		fout << print->value.key;
+		fout << print->value.key;*/
 
 		list* p = begin;
 		list* t;
@@ -38,7 +43,24 @@ namespace SLL
 		begin = NULL;
 	}
 
-	List& List::push(const size_t push_value){
+	List::list* List::_end()const {
+		list* ret = NULL;
+		
+		if (begin == NULL)
+			return ret;
+
+		list* p = begin;
+		while (p)
+		{
+			if (p->next == NULL) {
+				ret = p;
+				return ret;
+			}
+			p = p->next;
+		}
+	}
+
+	List& List::push(const int push_value){
 		list* ins = new list; // Добавляемый элемент
 		ins->value.key = push_value;
 		ins->next = NULL;
@@ -401,7 +423,7 @@ namespace SLL
 		return os;
 	}
 
-	List::content& List::operator[](const size_t index) {
+	List::content& List::operator[](size_t index) {
 		if (index > size() || index <= 0)
 			throw std::runtime_error("Error memory access\a");
 
@@ -413,6 +435,22 @@ namespace SLL
 			if (temp == index)
 				return ret->value;
 			
+			temp++;
+			ret = ret->next;
+		}
+	}
+	List::content& List::operator[](const size_t index) const {
+		if (index > size() || index <= 0)
+			throw std::runtime_error("Error memory access\a");
+
+		int temp = 1;
+		list* ret = begin; // Возвращаемый экземпляр структуры
+
+		for (;;)
+		{
+			if (temp == index)
+				return ret->value;
+
 			temp++;
 			ret = ret->next;
 		}
