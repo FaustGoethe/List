@@ -2,65 +2,38 @@
 
 namespace SLL
 {
-	List::List(){
+	 List::List(){
 		begin = NULL;
 	}
-	List::List(const List& v){
+	 List::List(const List& v){
+		List::~List();
 		begin = v.begin;
 	}
-	List::List(const int* arr, const int size) {
+	 List::List(const int* arr, int size) {
 		begin = NULL;
-		for (int i(0); i < size; i++)
+
+		for (int i(0); i < size; i++) {
 			push_front(arr[i]);
+		}
 	}
-	List::~List(){
-		if (begin == NULL)
-			return;
-		/*std::ofstream fout;
-		list* print = begin;
-		std::string file_name;
+	 List::~List(){
+		 if (begin == NULL) {
+			 return;
+		 }
+	
+		list* deleting = begin;
+		list* temp;
 
-		std::cout << "Enter file name: ";
-		std::getline(std::cin, file_name);
-		fout.open(file_name);
-
-		fout << size() << std::endl;
-
-		for (size_t i(0); i < size() - 1; i++) {
-			fout << print->value.key << std::endl;
-			print = print->next;
+		while (deleting){
+			temp = deleting;
+			deleting = deleting->next;
+			delete temp;
 		}
-		fout << print->value.key;*/
 
-		list* p = begin;
-		list* t;
-
-		while (p){
-			t = p;
-			p = p->next;
-			delete t;
-		}
 		begin = NULL;
 	}
 
-	List::list* List::_end()const {
-		list* ret = NULL;
-		
-		if (begin == NULL)
-			return ret;
-
-		list* p = begin;
-		while (p)
-		{
-			if (p->next == NULL) {
-				ret = p;
-				return ret;
-			}
-			p = p->next;
-		}
-	}
-
-	List& List::push(const int push_value){
+	 List& List::push(int push_value){
 		list* ins = new list; // Добавляемый элемент
 		ins->value.key = push_value;
 		ins->next = NULL;
@@ -69,6 +42,7 @@ namespace SLL
 		if (begin == NULL){
 			ins->value.index = 1;
 			begin = ins;
+			delete ins;
 			return *this;
 		}
 
@@ -76,6 +50,7 @@ namespace SLL
 			ins->next = t;
 			begin = ins;
 			Indexation();
+			delete ins;
 			return *this;
 		}
 
@@ -85,6 +60,7 @@ namespace SLL
 			if (t->next == NULL){
 				t->next = ins;
 				Indexation();
+				delete ins;
 				return *this;
 			}
 
@@ -92,31 +68,32 @@ namespace SLL
 				t->next = ins;
 				ins->next = t1;
 				Indexation();
+				delete ins;
 				return *this;
 			}
 
 			t = t->next;
 			t1 = t->next;
 		}
+		delete ins;
 	}
-	List& List::remove(const size_t remove_value){
+	
+	 List& List::remove(int remove_value){
 		if (begin == NULL)
 			throw std::runtime_error("The element can't be remove, because begin == null\a");
 
 		list* t = begin;
 
-		if (t->value.key == remove_value)
-		{
+		if (t->value.key == remove_value){
 			begin = t->next;
 			delete t;
 			Indexation();
 			return *this;
 		}
+
 		list*  t1 = t->next;
-		while (t1 != NULL)
-		{
-			if (t1->value.key == remove_value)
-			{
+		while (t1 != NULL){
+			if (t1->value.key == remove_value){
 				t->next = t1->next;
 				delete t1;
 				Indexation();
@@ -127,16 +104,17 @@ namespace SLL
 		}
 		throw std::runtime_error("Element not found");
 	}
-	int List::remove_at_index(const size_t remove_value){
-		if (begin == NULL)
-			throw std::runtime_error("The element can't be remove, because begin == null\a");
-		
-		int temp = 0;
+	
+	 int List::remove_at_index(size_t remove_index){
+		 if (begin == NULL) {
+			 throw std::runtime_error("The element can't be remove, because begin == null\a");
+		 }
+		int temp;
 
 		list* t = begin;
 		list*  t1 = t->next;
 
-		if (t->value.index == remove_value){
+		if (t->value.index == remove_index){
 			temp = t->value.key;
 			begin = t->next;
 			delete t;
@@ -145,7 +123,7 @@ namespace SLL
 		}
 
 		while (t1 != NULL){
-			if (t1->value.index == remove_value){
+			if (t1->value.index == remove_index){
 				temp = t1->value.key;
 				t->next = t1->next;
 				delete t1;
@@ -155,9 +133,10 @@ namespace SLL
 			t = t1;
 			t1 = t1->next;
 		}
-		throw std::runtime_error("Element not found");
+		return { 0 };
 	}
-	List& List::push_back(const size_t push_value){
+	
+	 List& List::push_back(int push_value){
 		list* ins = new list;
 		ins->value.key = push_value;
 		ins->next = NULL;
@@ -180,7 +159,8 @@ namespace SLL
 		}
 		
 	}
-	List& List::push_front(const size_t push_value){
+	
+	 List& List::push_front(int push_value){
 		list* ins = new list;
 		ins->value.key = push_value;
 		ins->next = begin;
@@ -188,7 +168,8 @@ namespace SLL
 		Indexation();
 		return *this;
 	}
-	size_t List::size() const{
+	
+	 size_t List::size() const{
 		if (begin == NULL)
 			return 0;
 		list* temp = begin;
@@ -201,7 +182,7 @@ namespace SLL
 		return result;
 	}
 
-	void List::fout(const std::string& FileName)const{
+	 void List::fout(const std::string& FileName)const{
 		if (begin == NULL)
 			throw std::runtime_error("This list can't be output, because begin == null\a");
 
@@ -218,7 +199,8 @@ namespace SLL
 		}
 		fout << print->value.key;
 	}
-	List& List::fin(const std::string& FileName){
+	
+	 List& List::fin(const std::string& FileName){
 		std::ifstream fin;
 		fin.open(FileName);
 		
@@ -238,30 +220,15 @@ namespace SLL
 		Indexation();
 		return *this;
 	}
-	size_t List::KeyFind(const size_t key){
+	
+	 size_t List::find(int key){
 		for (size_t i(1); i <= size(); i++)
 			if ((*this)[i].key == key)
 				return (*this)[i].index;
 		return 0;
 	}
 
-	List& List::key_sort_bubble(){
-		list* temp = begin;
-		content* Arr = Array();
-
-		for (size_t i(0); i < size(); i++)
-			for (size_t j(0); j < i; j++)
-				if (Arr[i].key > Arr[j].key)
-					std::swap(Arr[i], Arr[j]);
-
-		for (size_t i(0); i < size(); i++)
-		{
-			temp->value = Arr[i];
-			temp = temp->next;
-		}
-		return *this;
-	}
-	List& List::key_sort_reverse_bubble(){
+	 List& List::key_sort_reverse_bubble(){
 		list* temp = begin;
 		content* Arr = Array();
 
@@ -277,7 +244,7 @@ namespace SLL
 		}
 		return *this;
 	}
-	List& List::index_sort_bubble(){
+	 List& List::index_sort_bubble(){
 		list* temp = begin;
 		content* Arr = Array();
 
@@ -293,7 +260,7 @@ namespace SLL
 		}
 		return *this;
 	}
-	List& List::index_sort_reverse_bubble(){
+	 List& List::index_sort_reverse_bubble(){
 		list* temp = begin;
 		content* Arr = Array();
 
@@ -310,23 +277,23 @@ namespace SLL
 		return *this;
 	}
 
-	double List::averege() const{
+	 double List::averege() const{
 		if (begin == NULL)
 			return 0;
 
 		list* temp = begin;
 
-		double i = 0;
+		auto i = 0;
 
-		while (temp != NULL)
-		{
-			i += (double)temp->value.key;
+		while (temp != NULL){
+			i += temp->value.key;
 			temp = temp->next;
 		}
 
 		return i / size();
 	}
-	int List::maximum_value()const{
+	
+	 int List::max()const{
 		if (begin == NULL)
 			return 0;
 
@@ -341,7 +308,8 @@ namespace SLL
 		}
 		return result;
 	}
-	int List::minimum_value()const{
+	
+	 int List::min()const{
 		if (begin == NULL)
 			return 0;
 
@@ -359,7 +327,8 @@ namespace SLL
 			result = 0;
 		return result;
 	}
-	void List::Indexation(){
+	
+	 void List::Indexation(){
 		if (begin == NULL)
 			return;
 		list* temp = begin;
@@ -370,7 +339,8 @@ namespace SLL
 			temp = temp->next;
 		}
 	}
-	List::content* List::Array(){
+	
+	 List::content* List::Array(){
 		content* result = new content[size()];
 		list* temp = begin;
 
@@ -382,7 +352,7 @@ namespace SLL
 		return result;
 	}
 	
-	std::ostream& operator<<(std::ostream& os,const  List& v){
+	 std::ostream& operator<<(std::ostream& os,const  List& v){
 		SLL::List::list* print = v.begin;
 
 		while (print != NULL)
@@ -406,12 +376,13 @@ namespace SLL
 		os.precision(2);
 
 		os << "Среднее арифметическое списка: " << v.averege() << std::endl;
-		os << "Максимальное значение списка: " << v.maximum_value() << std::endl;
-		os << "Минимальное значение списка: " << v.minimum_value() << std::endl;
+		os << "Максимальное значение списка: " << v.max() << std::endl;
+		os << "Минимальное значение списка: " << v.min() << std::endl;
 		os << std::endl;
 		return os;
 	}
-	std::istream& operator>>(std::istream& os, List& v)
+	
+	 std::istream& operator>>(std::istream& os, List& v)
 	{
 		if (v.begin == NULL)
 			return os;
@@ -423,7 +394,7 @@ namespace SLL
 		return os;
 	}
 
-	List::content& List::operator[](size_t index) {
+	 List::content& List::operator[](size_t index) {
 		if (index > size() || index <= 0)
 			throw std::runtime_error("Error memory access\a");
 
@@ -439,7 +410,7 @@ namespace SLL
 			ret = ret->next;
 		}
 	}
-	List::content& List::operator[](const size_t index) const {
+	 List::content& List::operator[](size_t index) const {
 		if (index > size() || index <= 0)
 			throw std::runtime_error("Error memory access\a");
 
@@ -455,10 +426,6 @@ namespace SLL
 			ret = ret->next;
 		}
 	}
-	std::ostream& operator<<(std::ostream& os, List::content& v){
-		os << v.key << std::endl;
-		return os;
-	}
-
+	
 }
 using namespace SLL;

@@ -44,7 +44,8 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	List a;
-	a.fin("Bug.txt");
+	initList(a);
+	a.ksort();
 	std::cout << a;
 	_getch();
 	return 0;

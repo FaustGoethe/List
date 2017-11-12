@@ -302,19 +302,18 @@ namespace Side_functions
 namespace Main_Function
 {
 	// Освобождение памяти
-	void Free(List** begin) 
-	{
-		if (*begin == NULL)
+	void Free(List** begin) {
+		if (*begin == NULL) {
 			return;
+		}
 
-		List* p = *begin;
-		List* t;
+		List* liberator = *begin;
+		List* temp;
 
-		while (p)
-		{
-			t = p;
-			p = p->next;
-			delete t;
+		while (liberator){
+			temp = liberator;
+			liberator = liberator->next;
+			delete temp;
 		}
 		*begin = NULL;
 	}

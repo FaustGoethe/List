@@ -9,59 +9,93 @@
 
 namespace SLL
 {
-	typedef long double ld;
-
+	
 	class List
 	{	
 	public:
-
 		struct content
 		{
 			int key;
 			size_t index;
 
-			friend std::ostream& operator<<(std::ostream&, content&);
-			inline content& operator=(size_t v){
-				key = v;
+			friend std::ostream& operator<<(std::ostream& os, const content& value) {
+				os << value.key << std::endl;
+			}
+			inline content& operator=(const int value){
+				key = value;
 				return *this;
 		}
 		};
-	    struct list
-		{
+	    struct list{
 			content value;
 			list* next;
 		};
 	private:
-		list* begin; // Указатель на начало
-		
-		void Indexation(); // Присвоение каждому элементу списка индекса
-		content* Array(); // Представление списка в виде массива
+		// Указатель на начало
+		list* begin; 
+
+		// Присвоение каждому элементу списка индекса
+		void Indexation();
+
+		// Представление списка в виде массива
+		content* Array(); 
 	public:
 		List();
 		List(const List&);
-		List(const int*,const int);
+		//Инициализация массивом
+		List(const int*, int);
+		List(int, int);
 		~List();
 
 		List& push(const int); // Добавка элемента n значения в список
-		List& remove(const size_t); // Удаление элемента из списка по значению
-		int remove_at_index(const size_t); // Удаление элемента из списка по индексу 
-		List& push_back(const size_t); // Добавка элемента в конец списка
-		List& push_front(const size_t); // Добавка элемента в начало списка
+		List& remove(const int); // Удаление элемента из списка по значению
+		
+		int remove_at_index(size_t); // Удаление элемента из списка по индексу 
+		
+		List& push_back(const int); // Добавка элемента в конец списка
+		List& push_front(const int); // Добавка элемента в начало списка
+		
 		size_t size() const; // Размерность списка
 
 		double averege()const; // Среднее арифметическо значение списка
-		int maximum_value()const; // максимальное значение списка
-		int minimum_value()const; // минимальное значение списка
+		int max()const; // максимальное значение списка
+		int min()const; // минимальное значение списка
 
 		void fout(const std::string&) const;
-		size_t KeyFind(const size_t); // Поиск по значению
+		size_t find(const int); // Поиск по значению
 
-		inline list* _begin()const{ // Вернуть начало
+		// Вернуть начало
+		inline list* _begin() const{ 
 			return begin;
 		}
-		list* _end()const;
+		// Вернуть конец
+		list* _end() const {
+			if (begin == NULL) {
+				return NULL;
+			}
+			list* end = begin;
 
-		List& key_sort_bubble(); // Сортировка пузырьком по значению
+			while (end) {
+				if (end->next == NULL) {
+					return end;
+				}
+				end = end->next;
+			}
+		}
+
+		// Сортировка пузырьком по значению
+		void ksort() {
+			if (begin == NULL) {
+				return;
+			}
+			for (int i(1); i <= size(); i++) {
+				for (int j(1); j <= i; j++) {
+					if ((*this)[i].key < (*this)[j].key) {
+						std::swap((*this)[i].key, (*this)[j].key);
+					}
+				}
+			}
+		}
 		List& key_sort_reverse_bubble(); // Обратная сортировка пузырьком по значению
 		List& index_sort_bubble(); // Сортировка пузырьком по индексу
 		List& index_sort_reverse_bubble(); // Обратная сортировка пузырьком по индексу
@@ -72,7 +106,7 @@ namespace SLL
 		List& fin(const std::string&);
 		
 		content& operator[](size_t);
-		content& operator[](const size_t) const;
+		content& operator[](size_t) const;
 	};
 }
 #endif

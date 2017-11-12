@@ -1,3 +1,9 @@
-﻿  Main.cpp
+﻿  List.cpp
+c:\users\кирилл\desktop\c++\list\list\list\list.h(91): warning C4018: <=: несоответствие типов со знаком и без знака
+  Создание кода...
+c:\users\кирилл\desktop\c++\list\list\list\list.cpp(79): warning C4715: SLL::List::push: значение возвращается не при всех путях выполнения
+  Компиляция...
+  Main.cpp
+c:\users\кирилл\desktop\c++\list\list\list\list.h(91): warning C4018: <=: несоответствие типов со знаком и без знака
+  Создание кода...
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.exe
-  List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.pdb (Partial PDB)
