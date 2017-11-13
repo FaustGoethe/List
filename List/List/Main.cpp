@@ -44,8 +44,17 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	List a;
-	initList(a);
-	a.ksort();
+	
+	for (int i(0); i < 5; i++) {
+		a.push_back(i);
+	}
+	std::cout << a;
+	try {
+		a.remove_at_index(5);
+	}
+	catch (const std::exception& exp) {
+		std::cout << exp.what();
+	}
 	std::cout << a;
 	_getch();
 	return 0;
