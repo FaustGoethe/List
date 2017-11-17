@@ -1,7 +1,2 @@
 ﻿  Main.cpp
-c:\users\кирилл\desktop\c++\list\list\list\list.h(298): warning C4018: <=: несоответствие типов со знаком и без знака
-c:\users\кирилл\desktop\c++\list\list\list\list.h(310): warning C4018: <=: несоответствие типов со знаком и без знака
-c:\users\кирилл\desktop\c++\list\list\list\list.h(323): warning C4018: <=: несоответствие типов со знаком и без знака
-c:\users\кирилл\desktop\c++\list\list\list\list.h(335): warning C4018: <=: несоответствие типов со знаком и без знака
-c:\users\кирилл\desktop\c++\list\list\list\list.h(379): warning C4018: <: несоответствие типов со знаком и без знака
   List.vcxproj -> C:\Users\Кирилл\Desktop\C++\List\List\Debug\List.exe

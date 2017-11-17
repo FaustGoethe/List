@@ -2,9 +2,10 @@
 #ifndef _LIST_H
 #define _LIST_H
 
+#include <exception>
 #include <iostream>
 #include <fstream>
-#include <exception>
+#include <string>
 
 namespace SLL
 {
@@ -44,11 +45,48 @@ namespace SLL
 				temp = temp->next;
 			}
 		}
+
+		int recevingExistCodes(int x) const {
+			x += 256;
+			while (!(((x <= 57) && (x >= 48)) || ((x <= 90) && (x >= 65)) || ((x <= 122) && (x >= 97)))) {
+				if (x < 48) {
+					x += 24;
+				}
+				else {
+					x -= 47;
+				}
+			}
+			return x;
+		}
+		size_t getControlSum(const std::string& str) const {
+			size_t sault = 0;
+
+			for (size_t strlen(0); strlen < str.size(); strlen += 2) {
+				sault += int(str[strlen]);
+			}
+			return sault;
+		}
+
+		list* _end() {
+			if (begin == NULL) {
+				return NULL;
+			}
+			list* end = begin;
+
+			while (end) {
+				if (end->next == NULL) {
+					return end;
+				}
+				end = end->next;
+			}
+		}
 	public:
 		List() {
 			begin = NULL;
 		}
 		List(const List& cp) {
+			clear();
+
 			begin = cp.begin;
 		}
 		List(const int* arr, int size) {
@@ -58,7 +96,6 @@ namespace SLL
 				push_back(arr[i]);
 			}
 		}
-		//List(int, int);
 		~List() {
 			if (begin == NULL) {
 				return;
@@ -200,19 +237,54 @@ namespace SLL
 			Indexation();
 		}
 		
+		void pop_back() {
+			if (begin == NULL) {
+				return;
+			}
+			list* t = begin;
+			list* t1 = t->next;
+
+			while (t) {
+				if (t1->next == NULL) {
+					delete t1;
+					t->next = NULL;
+					return;
+				}
+				t = t->next;
+				t1 = t1->next;
+			}
+		}
+		void pop_front() {
+			if (begin == NULL) {
+				return;
+			}
+			list* pop = begin;
+			begin = begin->next;
+			delete pop;
+			Indexation();
+		}
+
 		size_t size() const {
 			if (begin == NULL) {
 				return 0;
 			}
 
-			list* temp = begin;
+			list* counter = begin;
 			size_t result = 0;
 
-			while (temp){
+			while (counter){
 				result++;
-				temp = temp->next;
+				counter = counter->next;
 			}
 			return result;
+		}
+		bool empty() const {
+			if (begin == NULL) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 
 		double averege() const {
@@ -265,19 +337,20 @@ namespace SLL
 			return result;
 		}
 
-		size_t find(int key) {
+		int count(int key) {
+			int count = 0;
 			for (size_t i(1); i <= size(); i++) {
 				if ((*this)[i].key == key) {
-					return (*this)[i].index;
+					count++;
 				}
 			}
-			return 0;
+			return (count == 0) ? -1 : count;
 		}
 
 		list* _begin() const{ 
 			return begin;
 		}
-		list* _end() const {
+		list* _end()   const {
 			if (begin == NULL) {
 				return NULL;
 			}
@@ -295,8 +368,8 @@ namespace SLL
 			if (begin == NULL) {
 				return;
 			}
-			for (int i(1); i <= size(); i++) {
-				for (int j(1); j <= i; j++) {
+			for (size_t i(1); i <= size(); i++) {
+				for (size_t j(1); j <= i; j++) {
 					if ((*this)[i].key < (*this)[j].key) {
 						std::swap((*this)[i].key, (*this)[j].key);
 					}
@@ -307,8 +380,8 @@ namespace SLL
 			if (begin == NULL) {
 				return;
 			}
-			for (int i(1); i <= size(); i++) {
-				for (int j(1); j <= i; j++) {
+			for (size_t i(1); i <= size(); i++) {
+				for (size_t j(1); j <= i; j++) {
 					if ((*this)[i].key > (*this)[j].key) {
 						std::swap((*this)[i].key, (*this)[j].key);
 					}
@@ -320,8 +393,8 @@ namespace SLL
 			if (begin == NULL) {
 				return;
 			}
-			for (int i(1); i <= size(); i++) {
-				for (int j(1); j <= i; j++) {
+			for (size_t i(1); i <= size(); i++) {
+				for (size_t j(1); j <= i; j++) {
 					if ((*this)[i].index < (*this)[j].index) {
 						std::swap((*this)[i], (*this)[j]);
 					}
@@ -332,8 +405,8 @@ namespace SLL
 			if (begin == NULL) {
 				return;
 			}
-			for (int i(1); i <= size(); i++) {
-				for (int j(1); j <= i; j++) {
+			for (size_t i(1); i <= size(); i++) {
+				for (size_t j(1); j <= i; j++) {
 					if ((*this)[i].index > (*this)[j].index) {
 						std::swap((*this)[i], (*this)[j]);
 					}
@@ -362,21 +435,24 @@ namespace SLL
 			os.setf(std::ios_base::fixed, std::ios_base::floatfield);
 			os.precision(2);
 
-			os << "Average: "	<< value.averege() << std::endl;
-			os << "Max: "		<< value.max() << std::endl;
-			os << "Min: "		<< value.min() << std::endl;
+			os << "Average: "	<< value.averege()	 << std::endl;
+			os << "Max: "		<< value.max()		 << std::endl;
+			os << "Min: "		<< value.min()		 << std::endl;
+			os << "Hash: "		<< value.getHash(32) << std::endl;
 
 			os << std::endl;
 			return os;
 		}
 		friend std::istream& operator>>(std::istream& is, List& value) {
+			value.clear();
+
 			size_t elemNum;
 
 			std::cout << "Enter number elements: ";
 			is >> elemNum;
 		
 			int add;
-			for (int i(0); i < elemNum; i++) {
+			for (size_t i(0); i < elemNum; i++) {
 				is >> add;
 				value.push_back(add);
 			}
@@ -391,13 +467,13 @@ namespace SLL
 				throw std::invalid_argument("File is not opened");
 			}
 
-			list* print = value.begin;
+			list* fprint = value.begin;
 
 			for (size_t i(0); i < value.size() - 1; i++) {
-				fout << print->value.key << std::endl;
-				print = print->next;
+				fout << fprint->value.key << std::endl;
+				fprint = fprint->next;
 			}
-			fout << print->value.key;
+			fout << fprint->value.key;
 
 			return fout;
 		}
@@ -405,6 +481,8 @@ namespace SLL
 			if (!fin.is_open()) {
 				throw std::invalid_argument("The file is not opened\a");
 			}
+			value.clear();
+
 			int addValue;
 
 			if (fin) {
@@ -422,14 +500,14 @@ namespace SLL
 			if (index > size() || index <= 0)
 				throw std::runtime_error("Error memory access\a");
 
-			int temp = 1;
+			size_t size = 1;
 			list* ret = begin; // Возвращаемый экземпляр структуры
 
 			for (;;) {
-				if (temp == index) {
+				if (size == index) {
 					return ret->value;
 				}
-				temp++;
+				size++;
 				ret = ret->next;
 			}
 		}
@@ -437,19 +515,127 @@ namespace SLL
 			if (index > size() || index <= 0)
 				throw std::runtime_error("Error memory access\a");
 
-			int temp = 1;
+			size_t size = 1;
 			list* ret = begin; // Возвращаемый экземпляр структуры
 
-			for (;;)
-			{
-				if (temp == index)
+			for (;;){
+				if (size == index) {
 					return ret->value;
-
-				temp++;
+				}
+				size++;
 				ret = ret->next;
 			}
 		}
+
+		void operator=(const List& cp) {
+			clear();
+			begin = cp.begin;
+		}
+
+		std::string getHash(size_t hashLength) const {
+			if (hashLength < 3) {
+				throw std::invalid_argument("Hash lengt can't be < 3!\a");
+			}
+			std::string userString = "";
+			list* adder = begin;
+
+			while (adder) {
+				userString += std::to_string(adder->value.key);
+				adder = adder->next;
+			}
+
+			std::string hash;
+
+			size_t minlen = 2;
+			size_t realMinLen = 0;
+
+			size_t oroginalSault = getControlSum(userString);
+			size_t oroginalLengtStr = userString.size();
+
+			while (minlen <= hashLength)		{ realMinLen = (minlen *= 2); }
+			while (minlen < oroginalLengtStr)	{ minlen *= 2; }
+
+			if (minlen - oroginalLengtStr < minlen) { minlen *= 2; }
+
+			int addCount = minlen - oroginalLengtStr;
+
+			for (int i(0); i < addCount; i++) {
+				userString += recevingExistCodes(userString[i] + userString[i + 1]);
+			}
+
+			int maxSault = getControlSum(userString);
+			int maxLengtStr = userString.size();
+
+			while (userString.size() != realMinLen) {
+				for (int i(0), center(userString.size() / 2); i < center; i++) {
+					hash += recevingExistCodes(userString[center - i] + userString[center + i]);
+				}
+				userString = hash;
+				hash.clear();
+			}
+			size_t rem = realMinLen - hashLength;
+
+			for (size_t i(0), CountCompress(realMinLen / rem); hash.size() < (hashLength - 4); i++) {
+				if (i % CountCompress == 0) {
+					hash += recevingExistCodes(userString[i] + userString[++i]);
+				}
+				else {
+					hash += userString[i];
+				}
+			}
+			hash += recevingExistCodes(oroginalSault);
+			hash += recevingExistCodes(oroginalLengtStr);
+
+			hash += recevingExistCodes(maxSault);
+			hash += recevingExistCodes(maxLengtStr);
+			return hash;
+		}
+
+		void clear() {
+			if (begin == NULL) {
+				return;
+			}
+			list* deleting = begin;
+			list* temp;
+
+			while (deleting->next) {
+				temp = deleting;
+				deleting = deleting->next;
+				delete temp;
+			}
+
+			begin = NULL;
+		}
+
+		void resize(size_t newSize) {
+			list* parser = begin;
+			while (parser) {
+				if (newSize > size()) {
+					push_back(0);
+				}
+
+				else if (newSize < size()) {
+					pop_back();
+				}
+				parser = parser->next;
+			}
+		}
+		void resize(size_t newSize, int value) {
+			list* parser = begin;
+			while (parser) {
+				if (newSize > size()) {
+					push_back(value);
+				}
+
+				else if (newSize < size()) {
+					pop_back();
+				}
+				parser = parser->next;
+			}
+		}
+		
+		//reverse
+		//get type
 	};
 }
 #endif
-using namespace SLL;
