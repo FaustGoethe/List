@@ -2,32 +2,29 @@
 #ifndef _MENU_H
 #define _MENU_H
 #include <iostream>
-namespace Menu
+namespace MENU
 {
 	using std::cout;
 	using std::endl;
 	
 	// Обычное меню
-	void menu()
-	{
-		cout << "1.Создать список" << endl;
-		cout << "2.Вывод" << endl;
-		cout << "3.Добавка/удаление" << endl;
-		cout << "4.Ввод/ввывод из файла" << endl;
-		cout << "5.Найти элемент списка" << endl;
-		cout << "6.Отсортировать список" << endl;
-		cout << "7.Зашифровать/расшифровать список" << endl;
-		cout << "8.Выйти" << endl;
+	void menu(){
+		cout << "1.Create list"			<< endl;
+		cout << "2.Show list"			<< endl;
+		cout << "3.Add/remove"			<< endl;
+		cout << "4.File"				<< endl;
+		cout << "5.Find the element"	<< endl;
+		cout << "6.Sort list"			<< endl;
+		cout << "7.Exit"				<< endl;
 	}
 
 	// Меню сортировки
-	void SortMenu()
-	{
-		cout << "1.Отсортировать значения по увеличению" << endl;
-		cout << "2.Отсортировать значения по уменьшению" << endl;
-		cout << "3.Отсортировать индексы по увеличению" << endl;
-		cout << "4.Отсортировать индексы по уменьшению" << endl;
-		cout << "5.выйти" << endl;
+	void SortMenu(){
+		cout << "1.Sort value up"	<< endl;
+		cout << "2.Sort value down" << endl;
+		cout << "3.Sort index up"	<< endl;
+		cout << "4.Sort index down" << endl;
+		cout << "5.Exit"			<< endl;
 	}
 
 	// Меню вывода из файла
@@ -42,22 +39,18 @@ namespace Menu
 	}
 
 	// Меню fstream
-	void FstreamMenu()
-	{
-		cout << "1.Ввести список в файл" << endl;
-		cout << "2.Вывести список из файла" << endl;
-		cout << "3.Выйти" << endl;
+	void FstreamMenu(){
+		cout << "1.Into file" << endl;
+		cout << "2.From file" << endl;
+		cout << "3.Exit" << endl;
 	}
 
 	// Меню добавки/удаления элементов
-	void ElementsMenu()
-	{
-		cout << "1.Добавить элемент" << endl;
-		cout << "2.Удалить элемент" << endl;
-		cout << "3.Удалить элемент по индексу" << endl;
-		cout << "4.Выйти" << endl;
+	void ElementsMenu(){
+		cout << "1.Add"					<< endl;
+		cout << "2.Remove"				<< endl;
+		cout << "3.Remove from index"	<< endl;
+		cout << "4.Exit"				<< endl;
 	}
-
 }
-using namespace Menu;
 #endif

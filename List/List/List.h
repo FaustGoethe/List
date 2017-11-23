@@ -85,8 +85,10 @@ namespace SLL
 			begin = NULL;
 		}
 		List(const List& cp) {
-			clear();
-
+			if (begin != NULL) {
+				clear();
+			}
+			
 			begin = cp.begin;
 		}
 		List(const int* arr, int size) {
@@ -122,12 +124,14 @@ namespace SLL
 			if (begin == NULL) {
 				ins->value.index = 1;
 				begin = ins;
+				return;
 			}
 
 			if (ins->value.key <= t->value.key) {
 				ins->next = t;
 				begin = ins;
 				Indexation();
+				return;
 			}
 
 			list* t1 = t->next;
@@ -135,12 +139,14 @@ namespace SLL
 				if (t->next == NULL) {
 					t->next = ins;
 					Indexation();
+					return;
 				}
 
 				if (ins->value.key >= t->value.key && ins->value.key <= t1->value.key) {
 					t->next = ins;
 					ins->next = t1;
 					Indexation();
+					return;
 				}
 
 				t = t->next;
@@ -279,12 +285,7 @@ namespace SLL
 			return result;
 		}
 		bool empty() const {
-			if (begin == NULL) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return (begin == NULL);
 		}
 
 		double averege() const {
@@ -451,9 +452,12 @@ namespace SLL
 			std::cout << "Enter number elements: ";
 			is >> elemNum;
 		
-			int add;
+			int add = 0;
 			for (size_t i(0); i < elemNum; i++) {
-				is >> add;
+				while (!(is >> add)) {
+					is.clear();
+					while (is.get() != '\n');
+				}
 				value.push_back(add);
 			}
 			return is;
@@ -533,6 +537,10 @@ namespace SLL
 		}
 
 		std::string getHash(size_t hashLength) const {
+			if (begin == NULL) {
+				return "0";
+			}
+
 			if (hashLength < 3) {
 				throw std::invalid_argument("Hash lengt can't be < 3!\a");
 			}
@@ -633,8 +641,17 @@ namespace SLL
 				parser = parser->next;
 			}
 		}
+
+		void reverse() {
+			if (begin == NULL) {
+				return;
+			}
+
+			for (int i(1), j(size()); i <= j; i++, j--) {
+				std::swap((*this)[i], (*this)[j]);
+			}
+		}
 		
-		//reverse
 		//get type
 	};
 }
