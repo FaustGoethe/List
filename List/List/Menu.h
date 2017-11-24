@@ -15,7 +15,9 @@ namespace MENU
 		cout << "4.File"				<< endl;
 		cout << "5.Find the element"	<< endl;
 		cout << "6.Sort list"			<< endl;
-		cout << "7.Exit"				<< endl;
+		cout << "7.Reverse list"		<< endl;
+		cout << "8.Resize"				<< endl;
+		cout << "9.Exit"				<< endl;
 	}
 
 	// Меню сортировки
