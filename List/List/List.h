@@ -34,7 +34,7 @@ namespace SLL
 	private:
 		list* begin; 
 
-		void Indexation() {
+		void Indexation() noexcept {
 			if (begin == NULL) {
 				return;
 			}
@@ -46,7 +46,7 @@ namespace SLL
 			}
 		}
 
-		int recevingExistCodes(int x) const {
+		int recevingExistCodes(int x) const noexcept {
 			x += 256;
 			while (!(((x <= 57) && (x >= 48)) || ((x <= 90) && (x >= 65)) || ((x <= 122) && (x >= 97)))) {
 				if (x < 48) {
@@ -58,7 +58,7 @@ namespace SLL
 			}
 			return x;
 		}
-		size_t getControlSum(const std::string& str) const {
+		size_t getControlSum(const std::string& str) const noexcept {
 			size_t sault = 0;
 
 			for (size_t strlen(0); strlen < str.size(); strlen += 2) {
@@ -67,7 +67,7 @@ namespace SLL
 			return sault;
 		}
 
-		list* _end() {
+		list* _end() noexcept {
 			if (begin == NULL) {
 				return NULL;
 			}
@@ -81,24 +81,29 @@ namespace SLL
 			}
 		}
 	public:
-		List() {
+		List() noexcept {
 			begin = NULL;
 		}
-		List(const List& cp) {
+		List(const List& cp) noexcept {
 			if (begin != NULL) {
 				clear();
 			}
 			
-			begin = cp.begin;
+			*begin = *cp.begin;
 		}
-		List(const int* arr, int size) {
+		List(const int* arr, int size) noexcept {
 			begin = NULL;
 
 			for (int i(0); i < size; i++) {
 				push_back(arr[i]);
 			}
 		}
-		~List() {
+		List(size_t size, int value) noexcept{
+			for (size_t i(0); i < size; i++) {
+				push_back(value);
+			}
+		}
+		~List() noexcept {
 			if (begin == NULL) {
 				return;
 			}
@@ -115,7 +120,18 @@ namespace SLL
 			begin = NULL;
 		}
 
-		void push(int push_value) {
+		List& operator()(const List& cp) noexcept {
+			clear();
+			*begin = *cp.begin;
+		}
+
+		List& operator=(const List& cp) noexcept {
+			clear();
+			begin = cp.begin;
+			return *this;
+		}
+
+		void push(int push_value) noexcept {
 			list* ins = new list; // Добавляемый элемент
 			ins->value.key = push_value;
 			ins->next = NULL;
@@ -210,7 +226,7 @@ namespace SLL
 			}
 		}
 
-		void push_back(int push_value) {
+		void push_back(int push_value) noexcept {
 			list* ins = new list;
 			ins->value.key = push_value;
 			ins->next = NULL;
@@ -233,7 +249,7 @@ namespace SLL
 			}
 			Indexation();
 		}
-		void push_front(int push_value) {
+		void push_front(int push_value) noexcept {
 			list* ins = new list;
 
 			ins->value.key = push_value;
@@ -243,7 +259,7 @@ namespace SLL
 			Indexation();
 		}
 		
-		void pop_back() {
+		void pop_back() noexcept {
 			if (begin == NULL) {
 				return;
 			}
@@ -260,7 +276,7 @@ namespace SLL
 				t1 = t1->next;
 			}
 		}
-		void pop_front() {
+		void pop_front() noexcept {
 			if (begin == NULL) {
 				return;
 			}
@@ -270,7 +286,7 @@ namespace SLL
 			Indexation();
 		}
 
-		size_t size() const {
+		size_t size() const noexcept {
 			if (begin == NULL) {
 				return 0;
 			}
@@ -284,11 +300,11 @@ namespace SLL
 			}
 			return result;
 		}
-		bool empty() const {
+		bool empty() const noexcept {
 			return (begin == NULL);
 		}
 
-		double averege() const {
+		double averege() const noexcept {
 			if (begin == NULL) {
 				return 0;
 			}
@@ -304,7 +320,7 @@ namespace SLL
 
 			return i / size();
 		}
-		int max() const {
+		int max() const noexcept {
 			if (begin == NULL) {
 				return 0;
 			}
@@ -320,7 +336,7 @@ namespace SLL
 			}
 			return result;
 		}
-		int min() const {
+		int min() const noexcept {
 			if (begin == NULL) {
 				return 0;
 			}
@@ -348,10 +364,10 @@ namespace SLL
 			return (count == 0) ? -1 : count;
 		}
 
-		list* _begin() const{ 
+		list* _begin() const noexcept {
 			return begin;
 		}
-		list* _end()   const {
+		list* _end()   const noexcept {
 			if (begin == NULL) {
 				return NULL;
 			}
@@ -415,7 +431,7 @@ namespace SLL
 			}
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const List& value) {
+		friend std::ostream& operator<<(std::ostream& os, const List& value) noexcept {
 			SLL::List::list* print = value.begin;
 
 			while (print){
@@ -444,7 +460,7 @@ namespace SLL
 			os << std::endl;
 			return os;
 		}
-		friend std::istream& operator>>(std::istream& is, List& value) {
+		friend std::istream& operator>>(std::istream& is, List& value) noexcept {
 			value.clear();
 
 			size_t elemNum;
@@ -487,16 +503,14 @@ namespace SLL
 			}
 			value.clear();
 
-			int addValue;
-
+			int addValue = 0;
 			if (fin) {
 				while (!fin.eof()) {
 					fin >> addValue;
 					value.push_back(addValue);
 				}
 			}
-
-			value.Indexation();
+			
 			return fin;
 		}
 		
@@ -531,16 +545,11 @@ namespace SLL
 			}
 		}
 
-		void operator=(const List& cp) {
-			clear();
-			begin = cp.begin;
-		}
-
 		std::string getHash(size_t hashLength) const {
 			if (begin == NULL) {
 				return "0";
 			}
-
+			
 			if (hashLength < 3) {
 				throw std::invalid_argument("Hash lengt can't be < 3!\a");
 			}
@@ -599,7 +608,7 @@ namespace SLL
 			return hash;
 		}
 
-		void clear() {
+		void clear() noexcept {
 			if (begin == NULL) {
 				return;
 			}
@@ -615,7 +624,7 @@ namespace SLL
 			begin = NULL;
 		}
 
-		void resize(size_t newSize) {
+		void resize(size_t newSize) noexcept {
 			list* parser = begin;
 			while (parser) {
 				if (newSize > size()) {
@@ -628,7 +637,7 @@ namespace SLL
 				parser = parser->next;
 			}
 		}
-		void resize(size_t newSize, int value) {
+		void resize(size_t newSize, int value) noexcept {
 			list* parser = begin;
 			while (parser) {
 				if (newSize > size()) {

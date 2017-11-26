@@ -4,6 +4,8 @@
 #include "List.h"
 #include "Menu.h"
 
+#define FILE "list.txt"
+
 using std::cout;
 using std::endl;
 using std::cin;
@@ -43,8 +45,8 @@ void add_remove(SLL::List& obj) {
 void file(SLL::List& obj) {
 	char c;
 
-	std::ofstream fout("ofstream.txt");
-	std::ifstream fin("ifstream.txt");
+	std::ifstream fin;
+	std::ofstream fout;
 
 	for (;;) {
 		MENU::FstreamMenu();
@@ -52,9 +54,21 @@ void file(SLL::List& obj) {
 		system("cls");
 
 		switch (c) {
-		case '1': fout << obj;	break;
-		case '2': fin >> obj;	break;
-		case '3': return;
+		case '1': 
+			fout.open(FILE);
+			fout << obj;	
+			break;
+		case '2':
+			fin.open(FILE);
+			try {
+				fin >> obj;
+			}
+			catch (const std::exception& excp) {
+				std::cerr << excp.what();
+			}
+			break;
+		case '3': 
+			return;
 
 		default: cout << "Bad opcode!\a"; break;
 		}
@@ -109,6 +123,12 @@ void general(SLL::List& obj) {
 
 int main(int argc, char* argv[]){
 	SLL::List a;
-	general(a);
+	try {
+		general(a);
+	}
+	catch (const std::exception& excp) {
+		cout << excp.what();
+	}
+	_getch();
 	return 0;
 }
