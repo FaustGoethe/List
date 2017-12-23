@@ -7,122 +7,44 @@
 #include <fstream>
 #include <string>
 
-namespace SLL
-{
+namespace SLL{
 	class List
 	{	
 	public:
-		struct content
-		{
+		struct content{
 			int key;
 			size_t index;
 
-			friend std::ostream& operator<<(std::ostream& os, const content& value) {
-				os << value.key << std::endl;
-				return os;
-			}
+			friend std::ostream& operator<<(std::ostream&, const content&) noexcept;
 
-			content& operator=(const int value){
-				key = value;
-				return *this;
-		}
+			content& operator=(int);
 		};
 	    struct list{
 			content value;
 			list* next;
+
+			friend std::ostream& operator<<(std::ostream&, const list&) noexcept;
 		};
 	private:
 		list* begin; 
 
-		void Indexation() noexcept {
-			if (begin == NULL) {
-				return;
-			}
-			list* temp = begin;
+		void Indexation() noexcept;
+		
+		int recevingExistCodes(int)					const noexcept;
+		size_t getControlSum(const std::string&)	const noexcept;
 
-			for (size_t i(1); i <= size(); i++) {
-				temp->value.index = i;
-				temp = temp->next;
-			}
-		}
-
-		int recevingExistCodes(int x) const noexcept {
-			x += 256;
-			while (!(((x <= 57) && (x >= 48)) || ((x <= 90) && (x >= 65)) || ((x <= 122) && (x >= 97)))) {
-				if (x < 48) {
-					x += 24;
-				}
-				else {
-					x -= 47;
-				}
-			}
-			return x;
-		}
-		size_t getControlSum(const std::string& str) const noexcept {
-			size_t sault = 0;
-
-			for (size_t strlen(0); strlen < str.size(); strlen += 2) {
-				sault += int(str[strlen]);
-			}
-			return sault;
-		}
-
-		list* _end() noexcept {
-			if (begin == NULL) {
-				return NULL;
-			}
-			list* end = begin;
-
-			while (end) {
-				if (end->next == NULL) {
-					return end;
-				}
-				end = end->next;
-			}
-		}
+		list* _end() noexcept;
 	public:
-		List() noexcept {
-			begin = NULL;
-		}
-		List(const List& cp) noexcept {
-			if (begin != NULL) {
-				clear();
-			}
-			
-			*begin = *cp.begin;
-		}
-		List(const int* arr, int size) noexcept {
-			begin = NULL;
-
-			for (int i(0); i < size; i++) {
-				push_back(arr[i]);
-			}
-		}
-		List(size_t size, int value) noexcept{
-			for (size_t i(0); i < size; i++) {
-				push_back(value);
-			}
-		}
-		~List() noexcept {
-			if (begin == NULL) {
-				return;
-			}
-
-			list* deleting = begin;
-			list* temp;
-
-			while (deleting->next) {
-				temp = deleting;
-				deleting = deleting->next;
-				delete temp;
-			}
-
-			begin = NULL;
-		}
+		List()					noexcept;
+		List(const List&)		noexcept;
+		List(const int*, int)	noexcept;
+		List(size_t, int)		noexcept;
+		~List()					noexcept;
 
 		List& operator()(const List& cp) noexcept {
 			clear();
 			*begin = *cp.begin;
+			return *this;
 		}
 
 		List& operator=(const List& cp) noexcept {
@@ -131,9 +53,9 @@ namespace SLL
 			return *this;
 		}
 
-		void push(int push_value) noexcept {
+		void push	(int _value) noexcept {
 			list* ins = new list; // Добавляемый элемент
-			ins->value.key = push_value;
+			ins->value.key = _value;
 			ins->next = NULL;
 
 			list* t = begin;
@@ -169,14 +91,14 @@ namespace SLL
 				t1 = t->next;
 			}
 		}
-		void remove(int remove_value) {
+		void remove	(int _value) {
 			if (begin == NULL) {
 				throw std::runtime_error("The element can't be remove, because begin == null\a");
 			}
 
 			list* t = begin;
 
-			if (t->value.key == remove_value) {
+			if (t->value.key == _value) {
 				begin = t->next;
 				delete t;
 				Indexation();
@@ -185,7 +107,7 @@ namespace SLL
 
 			list*  t1 = t->next;
 			while (t1 != NULL) {
-				if (t1->value.key == remove_value) {
+				if (t1->value.key == _value) {
 					t->next = t1->next;
 					delete t1;
 					Indexation();
@@ -432,10 +354,10 @@ namespace SLL
 		}
 
 		friend std::ostream& operator<<(std::ostream& os, const List& value) noexcept {
-			SLL::List::list* print = value.begin;
+			list* print = value.begin;
 
 			while (print){
-				os << print->value.key << " -> ";
+				os << print->value << " -> ";
 				print = print->next;
 			}
 			os << "NULL" << std::endl;
@@ -481,16 +403,28 @@ namespace SLL
 
 		friend std::ofstream& operator<<(std::ofstream& fout, const List& value) {
 			if (value.begin == NULL) {
-				throw std::runtime_error("This list can't be output, because begin == null\a");
+				throw std::runtime_error("This list can't be output, because begin == null;\a" + 
+					std::string("Code file: ") +
+					__FILE__ +
+					", line: " +
+					std::to_string(__LINE__) +
+					", func: " +
+					__func__);
 			}
 			if (!fout.is_open()) {
-				throw std::invalid_argument("File is not opened");
+				throw std::invalid_argument("File is not opened;\n" + 
+					std::string("Code file: ") +
+					__FILE__ +
+					", line: " +
+					std::to_string(__LINE__) +
+					", func: " +
+					__func__);
 			}
 
 			list* fprint = value.begin;
 
 			for (size_t i(0); i < value.size() - 1; i++) {
-				fout << fprint->value.key << std::endl;
+				fout << fprint->value << std::endl;
 				fprint = fprint->next;
 			}
 			fout << fprint->value.key;
@@ -660,7 +594,7 @@ namespace SLL
 				std::swap((*this)[i], (*this)[j]);
 			}
 		}
-		
+
 		//get type
 		//find
 	};

@@ -122,9 +122,10 @@ void general(SLL::List& obj) {
 }
 
 int main(int argc, char* argv[]){
-	SLL::List a;
+	SLL::List a(5,9);
+
 	try {
-		general(a);
+		cout << a;
 	}
 	catch (const std::exception& excp) {
 		cout << excp.what();

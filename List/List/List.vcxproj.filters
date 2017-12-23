@@ -13,9 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы исходного кода\Menu">
+      <UniqueIdentifier>{2686075a-1e41-44bf-8fab-0d18b9301aca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultMenu.cpp">
+      <Filter>Файлы исходного кода\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SortMenu.cpp">
+      <Filter>Файлы исходного кода\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="FstreamMenu.cpp">
+      <Filter>Файлы исходного кода\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementsMenu.cpp">
+      <Filter>Файлы исходного кода\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="List.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
