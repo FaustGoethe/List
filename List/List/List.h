@@ -41,242 +41,28 @@ namespace SLL{
 		List(size_t, int)		noexcept;
 		~List()					noexcept;
 
-		List& operator()(const List& cp) noexcept {
-			clear();
-			*begin = *cp.begin;
-			return *this;
-		}
+		List& operator()(const List&) noexcept;
+		List& operator= (const List&) noexcept;
 
-		List& operator=(const List& cp) noexcept {
-			clear();
-			begin = cp.begin;
-			return *this;
-		}
-
-		void push	(int _value) noexcept {
-			list* ins = new list; // Добавляемый элемент
-			ins->value.key = _value;
-			ins->next = NULL;
-
-			list* t = begin;
-			if (begin == NULL) {
-				ins->value.index = 1;
-				begin = ins;
-				return;
-			}
-
-			if (ins->value.key <= t->value.key) {
-				ins->next = t;
-				begin = ins;
-				Indexation();
-				return;
-			}
-
-			list* t1 = t->next;
-			while (t != NULL) {
-				if (t->next == NULL) {
-					t->next = ins;
-					Indexation();
-					return;
-				}
-
-				if (ins->value.key >= t->value.key && ins->value.key <= t1->value.key) {
-					t->next = ins;
-					ins->next = t1;
-					Indexation();
-					return;
-				}
-
-				t = t->next;
-				t1 = t->next;
-			}
-		}
-		void remove	(int _value) {
-			if (begin == NULL) {
-				throw std::runtime_error("The element can't be remove, because begin == null\a");
-			}
-
-			list* t = begin;
-
-			if (t->value.key == _value) {
-				begin = t->next;
-				delete t;
-				Indexation();
-				return;
-			}
-
-			list*  t1 = t->next;
-			while (t1 != NULL) {
-				if (t1->value.key == _value) {
-					t->next = t1->next;
-					delete t1;
-					Indexation();
-					return;
-				}
-				t = t1;
-				t1 = t1->next;
-			}
-			throw std::runtime_error("Element not found");
-		}
+		void push	(int) noexcept;
+		void remove	(int);
 		
-		void remove_at_index(size_t remove_index) {
-			if (begin == NULL) {
-				throw std::runtime_error("The element can't be remove, because begin == null\a");
-			}
-			if (remove_index <= 0 || remove_index > size()) {
-				throw std::runtime_error("Bad index\a");
-			}
-			
-			list* t = begin;
-			list* t1 = begin->next;
-			
-			if (t->value.index == remove_index) {
-				begin = t->next;
-				delete t;
-				Indexation();
-			}
+		void remove_at_index(size_t);
 
-			while (t1) {
-				if (t1->value.index == remove_index) {
-					t->next = t1->next;
-					delete t1;
-					Indexation();
-					return;
-				}
-				t = t1;
-				t1 = t1->next;
-			}
-		}
-
-		void push_back(int push_value) noexcept {
-			list* ins = new list;
-			ins->value.key = push_value;
-			ins->next = NULL;
-
-			if (begin == NULL) {
-				begin = ins;
-				Indexation();
-				return;
-			}
-
-			list* t = begin;
-			while (t) {
-				if (t->next == NULL) {
-					t->next = ins;
-					ins->next = NULL;
-					Indexation();
-					return;
-				}
-				t = t->next;
-			}
-			Indexation();
-		}
-		void push_front(int push_value) noexcept {
-			list* ins = new list;
-
-			ins->value.key = push_value;
-			ins->next = begin;
-
-			begin = ins;
-			Indexation();
-		}
+		void push_back	(int) noexcept;
+		void push_front	(int) noexcept;
 		
-		void pop_back() noexcept {
-			if (begin == NULL) {
-				return;
-			}
-			list* t = begin;
-			list* t1 = t->next;
+		void pop_back  () noexcept;
+		void pop_front () noexcept;
 
-			while (t) {
-				if (t1->next == NULL) {
-					delete t1;
-					t->next = NULL;
-					return;
-				}
-				t = t->next;
-				t1 = t1->next;
-			}
-		}
-		void pop_front() noexcept {
-			if (begin == NULL) {
-				return;
-			}
-			list* pop = begin;
-			begin = begin->next;
-			delete pop;
-			Indexation();
-		}
+		size_t	size()	const noexcept;
+		bool	empty()	const noexcept;
 
-		size_t size() const noexcept {
-			if (begin == NULL) {
-				return 0;
-			}
+		double averege()	const noexcept;
+		int max()			const noexcept;
+		int min()			const noexcept;
 
-			list* counter = begin;
-			size_t result = 0;
-
-			while (counter){
-				result++;
-				counter = counter->next;
-			}
-			return result;
-		}
-		bool empty() const noexcept {
-			return (begin == NULL);
-		}
-
-		double averege() const noexcept {
-			if (begin == NULL) {
-				return 0;
-			}
-
-			list* temp = begin;
-
-			auto i = 0;
-
-			while (temp != NULL) {
-				i += temp->value.key;
-				temp = temp->next;
-			}
-
-			return i / size();
-		}
-		int max() const noexcept {
-			if (begin == NULL) {
-				return 0;
-			}
-
-			list* temp = begin;
-			int result = 0;
-
-			while (temp != NULL) {
-				if (temp->value.key > result) {
-					result = temp->value.key;
-				}
-				temp = temp->next;
-			}
-			return result;
-		}
-		int min() const noexcept {
-			if (begin == NULL) {
-				return 0;
-			}
-
-			list* temp = begin;
-			int result = LONG_MAX;
-
-			while (temp){
-				if (temp->value.key < result) {
-					result = temp->value.key;
-				}
-				temp = temp->next;
-			}
-
-			return result;
-		}
-
-		int count(int key) {
+		int count(int key) const {
 			int count = 0;
 			for (size_t i(1); i <= size(); i++) {
 				if ((*this)[i].key == key) {
@@ -450,7 +236,7 @@ namespace SLL{
 		
 		content& operator[](size_t index) {
 			if (index > size() || index <= 0)
-				throw std::runtime_error("Error memory access\a");
+				throw std::runtime_error(("Error memory access\a"));
 
 			size_t size = 1;
 			list* ret = begin; // Возвращаемый экземпляр структуры

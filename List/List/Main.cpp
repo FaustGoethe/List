@@ -10,6 +10,7 @@ using std::cout;
 using std::endl;
 using std::cin;
 
+
 void add_remove(SLL::List& obj) {
 	char c;
 
@@ -122,10 +123,10 @@ void general(SLL::List& obj) {
 }
 
 int main(int argc, char* argv[]){
-	SLL::List a(5,9);
+	SLL::List a;
 
 	try {
-		cout << a;
+		a.remove(1);
 	}
 	catch (const std::exception& excp) {
 		cout << excp.what();

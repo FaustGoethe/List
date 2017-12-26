@@ -151,6 +151,7 @@
     <ClCompile Include="SortMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GetFilename.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Menu.h" />
   </ItemGroup>
