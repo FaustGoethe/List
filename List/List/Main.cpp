@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
 	SLL::List a;
 	a.push_back(12);
 	try {
-		cout << *a.bgn()._myiter;
+		cout << a;
 	}
 	catch (const std::exception& excp) {
 		cout << excp.what();

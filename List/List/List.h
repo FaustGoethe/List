@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <memory>
 
 using std::string;
 
@@ -28,38 +27,6 @@ namespace SLL{
 
 			friend std::ostream& operator<<(std::ostream&, const list&) noexcept;
 		};
-		struct iterator {
-		private:
-		public:
-			std::shared_ptr<list*> _myiter;
-			iterator() {
-				(*_myiter) = NULL;
-			}
-			iterator& operator=(const iterator& _newiter) {
-				_myiter = _newiter._myiter;
-				return *this;
-			}
-			iterator& operator=(list* _lst) {
-				*_myiter = _lst;
-				return *this;
-			}
-			iterator(list* _lst) {
-				*_myiter = _lst;
-			}
-			void operator++() {
-				if (_myiter == NULL) {
-					throw std::runtime_error(("Incrementing null"));
-				}
-				
-				
-			}
-			void operator--() {
-
-			}
-		};
-		iterator bgn() {
-			return begin;
-		}
 		List()					noexcept;
 		List(const List&)		noexcept;
 		List(const int*, int)	noexcept;

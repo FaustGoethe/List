@@ -65,6 +65,7 @@ namespace SLL {
 			}
 			end = end->next;
 		}
+		return end;
 	}
 
 
@@ -367,6 +368,7 @@ namespace SLL {
 			}
 			end = end->next;
 		}
+		return end;
 	}
 
 	void List::ksort() {
@@ -504,7 +506,7 @@ namespace SLL {
 
 	List::content& List::operator[](size_t index) {
 		if (index > size() || index <= 0)
-			throw std::runtime_error(EXCEPT("Error memory access")));
+			throw std::out_of_range(EXCEPT("Error memory access")));
 
 		size_t size = 1;
 		list* ret = begin; // Возвращаемый экземпляр структуры
@@ -519,7 +521,7 @@ namespace SLL {
 	}
 	List::content& List::operator[](size_t index) const {
 		if (index > size() || index <= 0)
-			throw std::runtime_error(EXCEPT("Error memory access\a")));
+			throw std::out_of_range(EXCEPT("Error memory access\a")));
 
 		size_t size = 1;
 		list* ret = begin; // Возвращаемый экземпляр структуры
