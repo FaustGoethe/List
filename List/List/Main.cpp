@@ -124,9 +124,9 @@ void general(SLL::List& obj) {
 
 int main(int argc, char* argv[]){
 	SLL::List a;
-
+	a.push_back(12);
 	try {
-		a.remove(1);
+		cout << *a.bgn()._myiter;
 	}
 	catch (const std::exception& excp) {
 		cout << excp.what();

@@ -6,6 +6,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
+
+using std::string;
 
 namespace SLL{
 	class List
@@ -25,16 +28,38 @@ namespace SLL{
 
 			friend std::ostream& operator<<(std::ostream&, const list&) noexcept;
 		};
-	private:
-		list* begin; 
+		struct iterator {
+		private:
+		public:
+			std::shared_ptr<list*> _myiter;
+			iterator() {
+				(*_myiter) = NULL;
+			}
+			iterator& operator=(const iterator& _newiter) {
+				_myiter = _newiter._myiter;
+				return *this;
+			}
+			iterator& operator=(list* _lst) {
+				*_myiter = _lst;
+				return *this;
+			}
+			iterator(list* _lst) {
+				*_myiter = _lst;
+			}
+			void operator++() {
+				if (_myiter == NULL) {
+					throw std::runtime_error(("Incrementing null"));
+				}
+				
+				
+			}
+			void operator--() {
 
-		void Indexation() noexcept;
-		
-		int recevingExistCodes(int)					const noexcept;
-		size_t getControlSum(const std::string&)	const noexcept;
-
-		list* _end() noexcept;
-	public:
+			}
+		};
+		iterator bgn() {
+			return begin;
+		}
 		List()					noexcept;
 		List(const List&)		noexcept;
 		List(const int*, int)	noexcept;
@@ -62,325 +87,44 @@ namespace SLL{
 		int max()			const noexcept;
 		int min()			const noexcept;
 
-		int count(int key) const {
-			int count = 0;
-			for (size_t i(1); i <= size(); i++) {
-				if ((*this)[i].key == key) {
-					count++;
-				}
-			}
-			return (count == 0) ? -1 : count;
-		}
+		int count(int) const;
 
-		list* _begin() const noexcept {
-			return begin;
-		}
-		list* _end()   const noexcept {
-			if (begin == NULL) {
-				return NULL;
-			}
-			list* end = begin;
+		list* _begin() const noexcept;
+		list* _end()   const noexcept;
 
-			while (end) {
-				if (end->next == NULL) {
-					return end;
-				}
-				end = end->next;
-			}
-		}
+		void ksort(); // По ключам
+		void isort(); // По ключам в обратном порядке
 
-		void ksort() {
-			if (begin == NULL) {
-				return;
-			}
-			for (size_t i(1); i <= size(); i++) {
-				for (size_t j(1); j <= i; j++) {
-					if ((*this)[i].key < (*this)[j].key) {
-						std::swap((*this)[i].key, (*this)[j].key);
-					}
-				}
-			}
-		}
-		void rksort() {
-			if (begin == NULL) {
-				return;
-			}
-			for (size_t i(1); i <= size(); i++) {
-				for (size_t j(1); j <= i; j++) {
-					if ((*this)[i].key > (*this)[j].key) {
-						std::swap((*this)[i].key, (*this)[j].key);
-					}
-				}
-			}
-		}
+		void rksort(); // По индексам
+		void irsort(); // По индексам в обратном порядке
 
-		void isort() {
-			if (begin == NULL) {
-				return;
-			}
-			for (size_t i(1); i <= size(); i++) {
-				for (size_t j(1); j <= i; j++) {
-					if ((*this)[i].index < (*this)[j].index) {
-						std::swap((*this)[i], (*this)[j]);
-					}
-				}
-			}
-		}
-		void irsort() {
-			if (begin == NULL) {
-				return;
-			}
-			for (size_t i(1); i <= size(); i++) {
-				for (size_t j(1); j <= i; j++) {
-					if ((*this)[i].index > (*this)[j].index) {
-						std::swap((*this)[i], (*this)[j]);
-					}
-				}
-			}
-		}
+		friend std::ostream& operator<<(std::ostream&, const List&) noexcept;
+		friend std::istream& operator>>(std::istream&,		 List&) noexcept;
 
-		friend std::ostream& operator<<(std::ostream& os, const List& value) noexcept {
-			list* print = value.begin;
-
-			while (print){
-				os << print->value << " -> ";
-				print = print->next;
-			}
-			os << "NULL" << std::endl;
-
-			print = value.begin;
-
-			while (print){
-				os << print->value.index << " -> ";
-				print = print->next;
-			}
-			os << "NULL" << std::endl;
-			os << std::endl;
-
-			os.setf(std::ios_base::fixed, std::ios_base::floatfield);
-			os.precision(2);
-
-			os << "Average: "	<< value.averege()	 << std::endl;
-			os << "Max: "		<< value.max()		 << std::endl;
-			os << "Min: "		<< value.min()		 << std::endl;
-			os << "Hash: "		<< value.getHash(32) << std::endl;
-
-			os << std::endl;
-			return os;
-		}
-		friend std::istream& operator>>(std::istream& is, List& value) noexcept {
-			value.clear();
-
-			size_t elemNum;
-
-			std::cout << "Enter number elements: ";
-			is >> elemNum;
+		friend std::ofstream& operator<<(std::ofstream&, const  List&);
+		friend std::ifstream& operator>>(std::ifstream&,		List&);
 		
-			int add = 0;
-			for (size_t i(0); i < elemNum; i++) {
-				while (!(is >> add)) {
-					is.clear();
-					while (is.get() != '\n');
-				}
-				value.push_back(add);
-			}
-			return is;
-		}
+		content& operator[](size_t);
+		content& operator[](size_t) const;
 
-		friend std::ofstream& operator<<(std::ofstream& fout, const List& value) {
-			if (value.begin == NULL) {
-				throw std::runtime_error("This list can't be output, because begin == null;\a" + 
-					std::string("Code file: ") +
-					__FILE__ +
-					", line: " +
-					std::to_string(__LINE__) +
-					", func: " +
-					__func__);
-			}
-			if (!fout.is_open()) {
-				throw std::invalid_argument("File is not opened;\n" + 
-					std::string("Code file: ") +
-					__FILE__ +
-					", line: " +
-					std::to_string(__LINE__) +
-					", func: " +
-					__func__);
-			}
+		string getHash(size_t) const;
 
-			list* fprint = value.begin;
+		void clear() noexcept;
 
-			for (size_t i(0); i < value.size() - 1; i++) {
-				fout << fprint->value << std::endl;
-				fprint = fprint->next;
-			}
-			fout << fprint->value.key;
+		void resize(size_t)			noexcept;
+		void resize(size_t, int)	noexcept;
 
-			return fout;
-		}
-		friend std::ifstream& operator>>(std::ifstream& fin, List& value) {
-			if (!fin.is_open()) {
-				throw std::invalid_argument("The file is not opened\a");
-			}
-			value.clear();
+		void reverse();
 
-			int addValue = 0;
-			if (fin) {
-				while (!fin.eof()) {
-					fin >> addValue;
-					value.push_back(addValue);
-				}
-			}
-			
-			return fin;
-		}
+	private:
+		list* begin; 
+
+		void Indexation() noexcept;
 		
-		content& operator[](size_t index) {
-			if (index > size() || index <= 0)
-				throw std::runtime_error(("Error memory access\a"));
+		int	recevingExistCodes(int)	const noexcept;
+		size_t getControlSum(const string&) const noexcept;
 
-			size_t size = 1;
-			list* ret = begin; // Возвращаемый экземпляр структуры
-
-			for (;;) {
-				if (size == index) {
-					return ret->value;
-				}
-				size++;
-				ret = ret->next;
-			}
-		}
-		content& operator[](size_t index) const {
-			if (index > size() || index <= 0)
-				throw std::runtime_error("Error memory access\a");
-
-			size_t size = 1;
-			list* ret = begin; // Возвращаемый экземпляр структуры
-
-			for (;;){
-				if (size == index) {
-					return ret->value;
-				}
-				size++;
-				ret = ret->next;
-			}
-		}
-
-		std::string getHash(size_t hashLength) const {
-			if (begin == NULL) {
-				return "0";
-			}
-			
-			if (hashLength < 3) {
-				throw std::invalid_argument("Hash lengt can't be < 3!\a");
-			}
-			std::string userString = "";
-			list* adder = begin;
-
-			while (adder) {
-				userString += std::to_string(adder->value.key);
-				adder = adder->next;
-			}
-
-			std::string hash;
-
-			size_t minlen = 2;
-			size_t realMinLen = 0;
-
-			size_t oroginalSault = getControlSum(userString);
-			size_t oroginalLengtStr = userString.size();
-
-			while (minlen <= hashLength)		{ realMinLen = (minlen *= 2); }
-			while (minlen < oroginalLengtStr)	{ minlen *= 2; }
-
-			if (minlen - oroginalLengtStr < minlen) { minlen *= 2; }
-
-			int addCount = minlen - oroginalLengtStr;
-
-			for (int i(0); i < addCount; i++) {
-				userString += recevingExistCodes(userString[i] + userString[i + 1]);
-			}
-
-			int maxSault = getControlSum(userString);
-			int maxLengtStr = userString.size();
-
-			while (userString.size() != realMinLen) {
-				for (int i(0), center(userString.size() / 2); i < center; i++) {
-					hash += recevingExistCodes(userString[center - i] + userString[center + i]);
-				}
-				userString = hash;
-				hash.clear();
-			}
-			size_t rem = realMinLen - hashLength;
-
-			for (size_t i(0), CountCompress(realMinLen / rem); hash.size() < (hashLength - 4); i++) {
-				if (i % CountCompress == 0) {
-					hash += recevingExistCodes(userString[i] + userString[++i]);
-				}
-				else {
-					hash += userString[i];
-				}
-			}
-			hash += recevingExistCodes(oroginalSault);
-			hash += recevingExistCodes(oroginalLengtStr);
-
-			hash += recevingExistCodes(maxSault);
-			hash += recevingExistCodes(maxLengtStr);
-			return hash;
-		}
-
-		void clear() noexcept {
-			if (begin == NULL) {
-				return;
-			}
-			list* deleting = begin;
-			list* temp;
-
-			while (deleting->next) {
-				temp = deleting;
-				deleting = deleting->next;
-				delete temp;
-			}
-
-			begin = NULL;
-		}
-
-		void resize(size_t newSize) noexcept {
-			list* parser = begin;
-			while (parser) {
-				if (newSize > size()) {
-					push_back(0);
-				}
-
-				else if (newSize < size()) {
-					pop_back();
-				}
-				parser = parser->next;
-			}
-		}
-		void resize(size_t newSize, int value) noexcept {
-			list* parser = begin;
-			while (parser) {
-				if (newSize > size()) {
-					push_back(value);
-				}
-
-				else if (newSize < size()) {
-					pop_back();
-				}
-				parser = parser->next;
-			}
-		}
-
-		void reverse() {
-			if (begin == NULL) {
-				return;
-			}
-
-			for (int i(1), j(size()); i <= j; i++, j--) {
-				std::swap((*this)[i], (*this)[j]);
-			}
-		}
-
+		list* _end() noexcept;
 		//get type
 		//find
 	};
