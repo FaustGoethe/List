@@ -3,9 +3,7 @@
 #define _LIST_CPP
 
 #include "List.h"
-#include "GetFilename.h"
 
-#define EXCEPT(X) (X) + ((std::string("\a\nFile: ") + GetFilename(__FILE__) + "\nFunc: " + __func__ + "()" + "\nLine: " + std::to_string(__LINE__)) 
 
 namespace SLL {
 	std::ostream& operator<<(std::ostream& os, const List::content& _val) noexcept{
@@ -24,12 +22,12 @@ namespace SLL {
 		if (begin == NULL) {
 			return;
 		}
-		list* temp = begin;
-
-		for (size_t i(1); i <= size(); i++) {
-			temp->value.index = i;
-			temp = temp->next;
-		}
+		list* iter = begin;
+        size_t index = 0;
+        while(iter){
+            iter->value.index = index;
+            ++index;
+        }
 	}
 
 	int List::recevingExistCodes(int x) const noexcept {
@@ -82,13 +80,13 @@ namespace SLL {
 	List::List(const int* arr, int size) noexcept {
 		begin = NULL;
 
-		for (int i(0); i < size; i++) {
+		for (size_t i(0); i < size; ++i) {
 			push_back(arr[i]);
 		}
 	}
 	List::List(size_t size, int value) noexcept {
 		begin = NULL;
-
+        // TODO: call resize()
 		for (size_t i(0); i < size; i++) {
 			push_back(value);
 		}
@@ -98,12 +96,12 @@ namespace SLL {
 			return;
 		}
 
-		list* deleting = begin;
+		list* deleter = begin;
 		list* temp;
 
-		while (deleting->next) {
-			temp = deleting;
-			deleting = deleting->next;
+		while (deleter->next) {
+			temp = deleter;
+			deleter = deleter->next;
 			delete temp;
 		}
 
@@ -123,7 +121,7 @@ namespace SLL {
 
 	void List::push		(int _value) noexcept {
 		list* ins = new list; // Добавляемый элемент
-		ins->value.key = _value;
+		ins->value.value = _value;
 		ins->next = NULL;
 
 		list* t = begin;
@@ -133,7 +131,7 @@ namespace SLL {
 			return;
 		}
 
-		if (ins->value.key <= t->value.key) {
+		if (ins->value.value <= t->value.key) {
 			ins->next = t;
 			begin = ins;
 			Indexation();
@@ -216,36 +214,36 @@ namespace SLL {
 		}
 	}
 
-	void List::push_back	(int push_value) noexcept {
-		list* ins = new list;
-		ins->value.key = push_value;
-		ins->next = NULL;
+	void List::push_back(int value) noexcept {
+		list* inserter = new list;
+
+		inserter->value.value = value;
+		inserter->next = NULL;
 
 		if (begin == NULL) {
-			begin = ins;
-			Indexation();
+			begin = inserter;
+            begin->value.index = 0;
 			return;
 		}
 
-		list* t = begin;
-		while (t) {
-			if (t->next == NULL) {
-				t->next = ins;
-				ins->next = NULL;
-				Indexation();
+		list* iter = begin;
+		while (iter) {
+			if (iter->next == NULL) {
+				iter->next = inserter;
+				inserter->next = NULL;
+				inserter->value.index = iter->value.index + 1;
 				return;
 			}
-			t = t->next;
+			iter = iter->next;
 		}
-		Indexation();
 	}
-	void List::push_front	(int push_value) noexcept {
-		list* ins = new list;
+	void List::push_front (int value) noexcept {
+		list* inserter = new list;
 
-		ins->value.key = push_value;
-		ins->next = begin;
+		inserter->value.value = value;
+		inserter->next = begin;
 
-		begin = ins;
+		begin = inserter;
 		Indexation();
 	}
 
@@ -285,7 +283,7 @@ namespace SLL {
 		size_t result = 0;
 
 		while (counter) {
-			result++;
+			++result;
 			counter = counter->next;
 		}
 		return result;
@@ -325,16 +323,16 @@ namespace SLL {
 		}
 		return result;
 	}
-	int		List::min()		const noexcept {
+	int List::min()	const noexcept {
 		if (begin == NULL) {
 			return 0;
 		}
 
 		list* temp = begin;
-		int result = LONG_MAX;
+		int result = NULL;
 
 		while (temp) {
-			if (temp->value.key < result) {
+			if (result == NULL || temp->value.key < result) {
 				result = temp->value.key;
 			}
 			temp = temp->next;
@@ -345,11 +343,14 @@ namespace SLL {
 
 	int List::count(int key) const {
 		int count = 0;
-		for (size_t i(1); i <= size(); i++) {
-			if ((*this)[i].key == key) {
-				count++;
-			}
-		}
+        list* iter = begin;
+        while (iter) {
+            if (iter->value == key){
+                ++count;
+            }
+            iter = iter->next;
+        }
+
 		return (count == 0) ? -1 : count;
 	}
 
@@ -371,7 +372,7 @@ namespace SLL {
 		return end;
 	}
 
-	void List::ksort() {
+	void List::ksort(bool reverse) {
 		if (begin == NULL) {
 			return;
 		}
@@ -383,38 +384,14 @@ namespace SLL {
 			}
 		}
 	}
-	void List::rksort() {
-		if (begin == NULL) {
-			return;
-		}
-		for (size_t i(1); i <= size(); i++) {
-			for (size_t j(1); j <= i; j++) {
-				if ((*this)[i].key > (*this)[j].key) {
-					std::swap((*this)[i].key, (*this)[j].key);
-				}
-			}
-		}
-	}
 
-	void List::isort() {
+	void List::isort(bool reverse) {
 		if (begin == NULL) {
 			return;
 		}
 		for (size_t i(1); i <= size(); i++) {
 			for (size_t j(1); j <= i; j++) {
 				if ((*this)[i].index < (*this)[j].index) {
-					std::swap((*this)[i], (*this)[j]);
-				}
-			}
-		}
-	}
-	void List::irsort() {
-		if (begin == NULL) {
-			return;
-		}
-		for (size_t i(1); i <= size(); i++) {
-			for (size_t j(1); j <= i; j++) {
-				if ((*this)[i].index > (*this)[j].index) {
 					std::swap((*this)[i], (*this)[j]);
 				}
 			}
@@ -450,24 +427,6 @@ namespace SLL {
 		os << std::endl;
 		return os;
 	}
-	std::istream& operator>>(std::istream& is, List& value) noexcept {
-		value.clear();
-
-		size_t elemNum;
-
-		std::cout << "Enter number elements: ";
-		is >> elemNum;
-
-		int add = 0;
-		for (size_t i(0); i < elemNum; i++) {
-			while (!(is >> add)) {
-				is.clear();
-				while (is.get() != '\n');
-			}
-			value.push_back(add);
-		}
-		return is;
-	}
 
 	std::ofstream& operator<<(std::ofstream& fout, const List& value) {
 		if (value.begin == NULL) {
@@ -487,52 +446,33 @@ namespace SLL {
 
 		return fout;
 	}
-	std::ifstream& operator>>(std::ifstream& fin, List& value) {
-		if (!fin.is_open()) {
-			throw std::invalid_argument(EXCEPT("Bad filename")));
-		}
-		value.clear();
-
-		int addValue = 0;
-		if (fin) {
-			while (!fin.eof()) {
-				fin >> addValue;
-				value.push_back(addValue);
-			}
-		}
-
-		return fin;
-	}
 
 	List::content& List::operator[](size_t index) {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access")));
 
-		size_t size = 1;
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
-		for (;;) {
-			if (size == index) {
-				return ret->value;
-			}
-			size++;
+        while (ret){
+            if (ret->idnex == index){
+                return ret;
+            }
 			ret = ret->next;
-		}
+        }
 	}
+
 	List::content& List::operator[](size_t index) const {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access\a")));
 
-		size_t size = 1;
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
-		for (;;) {
-			if (size == index) {
-				return ret->value;
-			}
-			size++;
-			ret = ret->next;
-		}
+        while (ret) {
+            if (ret->index == index){
+                return ret;
+            }
+            ret = ret->next;
+        }
 	}
 
 	std::string List::getHash(size_t hashLength) const {
@@ -602,52 +542,41 @@ namespace SLL {
 		if (begin == NULL) {
 			return;
 		}
-		list* deleting = begin;
+		list* deleter = begin;
 		list* temp;
 
-		while (deleting->next) {
-			temp = deleting;
-			deleting = deleting->next;
+		while (deleter->next) {
+			temp = deleter;
+			deleter = deleter->next;
 			delete temp;
 		}
 
 		begin = NULL;
 	}
 
-	void List::resize(size_t newSize) noexcept {
-		list* parser = begin;
-		while (parser) {
-			if (newSize > size()) {
-				push_back(0);
-			}
-
-			else if (newSize < size()) {
-				pop_back();
-			}
-			parser = parser->next;
-		}
-	}
 	void List::resize(size_t newSize, int value) noexcept {
 		list* parser = begin;
 		while (parser) {
 			if (newSize > size()) {
 				push_back(value);
-			}
-
-			else if (newSize < size()) {
+			} else if (newSize < size()) {
 				pop_back();
 			}
 			parser = parser->next;
 		}
 	}
+
+	void List::resize(size_t newSize) noexcept {
+        resize(NewSize, 0);
+    }
 
 	void List::reverse() {
 		if (begin == NULL) {
 			return;
 		}
 
-		for (int i(1), j(size()); i <= j; i++, j--) {
-			std::swap((*this)[i], (*this)[j]);
+		for (size_t start(1), stop(size()); start <= stop; ++start, --stop) {
+			std::swap((*this)[start], (*this)[stop]);
 		}
 	}
 }
