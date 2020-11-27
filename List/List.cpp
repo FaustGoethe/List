@@ -239,15 +239,7 @@ namespace SLL {
 			return 0;
 		}
 
-		list* temp = begin;
-
-		auto i = 0;
-
-		while (temp != NULL) {
-			i += temp->value.key;
-			temp = temp->next;
-		}
-		return i / size();
+		return double(sum() / size());
 	}
 	int32_t List::max()		const noexcept {
 		if (begin == nullptr) {
