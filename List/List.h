@@ -30,7 +30,7 @@ namespace SLL{
     };
 
 
-	class List{	
+	class List {
 	public:
 		List() noexcept; // base constructor
 		List(const List&) noexcept; // copying constructor

@@ -126,7 +126,7 @@ namespace SLL {
     }
 	void List::push_back(int32_t value) noexcept {
 		list* inserter = new list;
-
+        // inserted value
 		inserter->value.value = value;
 		inserter->next = nullptr;
 
@@ -349,7 +349,6 @@ namespace SLL {
 			}
 		}
 	}
-
 	void List::isort(bool reverse) {
 		if (begin == nullptr) {
 			return;
@@ -391,7 +390,6 @@ namespace SLL {
 		os << std::endl;
 		return os;
 	}
-
 	std::ofstream& operator<<(std::ofstream& fout, const List& value) {
 		if (value.begin == nullptr) {
 			throw std::runtime_error("Bad begin");
@@ -466,7 +464,6 @@ namespace SLL {
 			parser = parser->next;
 		}
 	}
-
 	void List::resize(uint32_t NewSize) noexcept {
         resize(NewSize, 0);
     }
