@@ -274,6 +274,21 @@ namespace SLL {
 
 		return result;
 	}
+	int32_t List::sum() const noexcept {
+	    if (begin == nullptr){
+	        return 0;
+	    }
+
+	    auto* iter = begin;
+	    int32_t res = 0;
+
+	    while (iter) {
+	        res += iter->value.value;
+	        iter = iter->next;
+	    }
+
+	    return res;
+	}
 
 	int64_t List::count(int32_t key) const {
 		uint32_t count = 0;
