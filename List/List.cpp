@@ -6,14 +6,14 @@
 
 
 namespace SLL {
-	std::ostream& operator<<(std::ostream& os, const List::content& _val) noexcept{
-		return os << _val.key;
-	}
-	std::ostream& operator<<(std::ostream& os, const List::list&	_val) noexcept {
+	std::ostream& operator<<(std::ostream& os, const content& _val) noexcept {
 		return os << _val.value;
 	}
-	List::content& List::content::operator=(int _val) {
-		key = _val;
+	std::ostream& operator<<(std::ostream& os, const list& _val) noexcept {
+		return os << _val.value;
+	}
+	content& content::operator=(int32_t _val) noexcept {
+		value = _val;
 		return *this;
 	}
 
