@@ -478,7 +478,7 @@ namespace SLL {
 	}
 
 	content List::find(int32_t value) const noexcept {
-	    return *begin;
+	    return begin->value;
 	}
 }
 #endif // !_LIST_CPP
