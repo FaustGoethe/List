@@ -68,8 +68,6 @@ namespace SLL{
 		content& operator[](size_t);
 		content& operator[](size_t) const;
 
-        std::string getHash(size_t) const;
-
 		void clear() noexcept;
 
 		void resize(size_t, int)	noexcept;
@@ -80,9 +78,6 @@ namespace SLL{
 		list* begin;
 
 		void Indexation() noexcept;
-		
-		int	recevingExistCodes(int)	const noexcept;
-		size_t getControlSum(const std::string&) const noexcept;
 
 		list* _end() noexcept;
 		//get type
