@@ -23,14 +23,15 @@ namespace SLL {
 			return;
 		}
 		list* iter = begin;
-        size_t index = 0;
+        uint32_t index = 0;
+
         while(iter){
             iter->value.index = index;
             ++index;
         }
 	}
 
-	void List::push_back(int value) noexcept {
+	void List::push_back(int32_t value) noexcept {
 		list* inserter = new list;
 
 		inserter->value.value = value;
@@ -53,7 +54,7 @@ namespace SLL {
 			iter = iter->next;
 		}
 	}
-	void List::push_front (int value) noexcept {
+	void List::push_front (int32_t value) noexcept {
 		list* inserter = new list;
 
 		inserter->value.value = value;
@@ -90,13 +91,13 @@ namespace SLL {
 		Indexation();
 	}
 
-	size_t	List::size()	const noexcept {
+	uint32_t List::size()	const noexcept {
 		if (begin == NULL) {
 			return 0;
 		}
 
 		list* counter = begin;
-		size_t result = 0;
+		uint32_t result = 0;
 
 		while (counter) {
 			++result;
@@ -123,13 +124,13 @@ namespace SLL {
 		}
 		return i / size();
 	}
-	int		List::max()		const noexcept {
+	int32_t 		List::max()		const noexcept {
 		if (begin == NULL) {
 			return 0;
 		}
 
 		list* temp = begin;
-		int result = 0;
+		int32_t result = 0;
 
 		while (temp != NULL) {
 			if (temp->value.key > result) {
@@ -139,13 +140,13 @@ namespace SLL {
 		}
 		return result;
 	}
-	int List::min()	const noexcept {
+	int32_t List::min()	const noexcept {
 		if (begin == NULL) {
 			return 0;
 		}
 
 		list* temp = begin;
-		int result = NULL;
+		int32_t result = NULL;
 
 		while (temp) {
 			if (result == NULL || temp->value.key < result) {
@@ -157,8 +158,8 @@ namespace SLL {
 		return result;
 	}
 
-	int List::count(int key) const {
-		int count = 0;
+	int64_t List::count(int32_t key) const {
+		uint32_t count = 0;
         list* iter = begin;
         while (iter) {
             if (iter->value == key){
@@ -192,8 +193,9 @@ namespace SLL {
 		if (begin == NULL) {
 			return;
 		}
-		for (size_t i(1); i <= size(); i++) {
-			for (size_t j(1); j <= i; j++) {
+		// TODO: define lambda depending on reverse
+		for (uint32_t i(1); i <= size(); i++) {
+			for (uint32_t j(1); j <= i; j++) {
 				if ((*this)[i].key < (*this)[j].key) {
 					std::swap((*this)[i].key, (*this)[j].key);
 				}
@@ -205,8 +207,8 @@ namespace SLL {
 		if (begin == NULL) {
 			return;
 		}
-		for (size_t i(1); i <= size(); i++) {
-			for (size_t j(1); j <= i; j++) {
+		for (uint32_t i(1); i <= size(); i++) {
+			for (uint32_t j(1); j <= i; j++) {
 				if ((*this)[i].index < (*this)[j].index) {
 					std::swap((*this)[i], (*this)[j]);
 				}
@@ -254,7 +256,7 @@ namespace SLL {
 
 		List::list* fprint = value.begin;
 
-		for (size_t i(0); i < value.size() - 1; i++) {
+		for (uint32_t i(0); i < value.size() - 1; i++) {
 			fout << fprint->value << std::endl;
 			fprint = fprint->next;
 		}
@@ -263,7 +265,7 @@ namespace SLL {
 		return fout;
 	}
 
-	List::content& List::operator[](size_t index) {
+	List::content& List::operator[](const uint32_t& index) {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access")));
 
@@ -277,7 +279,7 @@ namespace SLL {
         }
 	}
 
-	List::content& List::operator[](size_t index) const {
+	List::content& List::operator[](uint32_t index) const {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access\a")));
 
@@ -307,7 +309,8 @@ namespace SLL {
 		begin = NULL;
 	}
 
-	void List::resize(size_t newSize, int value) noexcept {
+	void List::resize(uint32_t newSize, uint32_t value) noexcept {
+	    // TODO
 		list* parser = begin;
 		while (parser) {
 			if (newSize > size()) {
@@ -319,7 +322,7 @@ namespace SLL {
 		}
 	}
 
-	void List::resize(size_t newSize) noexcept {
+	void List::resize(uint32_t NewSize) noexcept {
         resize(NewSize, 0);
     }
 
@@ -328,7 +331,7 @@ namespace SLL {
 			return;
 		}
 
-		for (size_t start(1), stop(size()); start <= stop; ++start, --stop) {
+		for (uint32_t start(1), stop(size()); start <= stop; ++start, --stop) {
 			std::swap((*this)[start], (*this)[stop]);
 		}
 	}
