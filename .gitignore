@@ -37,3 +37,6 @@
 
 # Git
 .git/
+
+# CMake dir in Clion
+cmake-build-debug/
