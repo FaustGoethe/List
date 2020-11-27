@@ -247,11 +247,11 @@ namespace SLL {
 		}
 
 		list* temp = begin;
-		int32_t result = 0;
+		auto result = INT64_MIN;
 
-		while (temp != NULL) {
-			if (temp->value.key > result) {
-				result = temp->value.key;
+		while (temp != nullptr) {
+			if (temp->value.value > result) {
+				result = temp->value.value;
 			}
 			temp = temp->next;
 		}
