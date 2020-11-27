@@ -82,6 +82,7 @@ namespace SLL {
         while(iter){
             iter->value.index = index;
             ++index;
+            iter = iter->next;
         }
 	}
 
