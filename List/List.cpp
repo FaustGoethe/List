@@ -385,9 +385,8 @@ namespace SLL {
 
 		os << "Average: " << value.averege() << std::endl;
 		os << "Max: " << value.max() << std::endl;
-		os << "Min: " << value.min() << std::endl;
+		os << "Min: " << value.min();
 
-		os << std::endl;
 		return os;
 	}
 	std::ofstream& operator<<(std::ofstream& fout, const List& value) {
