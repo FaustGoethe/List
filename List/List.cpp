@@ -294,7 +294,7 @@ namespace SLL {
 		uint32_t count = 0;
         list* iter = begin;
         while (iter) {
-            if (iter->value == key){
+            if (iter->value.value == key){
                 ++count;
             }
             iter = iter->next;
@@ -342,8 +342,8 @@ namespace SLL {
 		// TODO: define lambda depending on reverse
 		for (uint32_t i(1); i <= size(); i++) {
 			for (uint32_t j(1); j <= i; j++) {
-				if ((*this)[i].key < (*this)[j].key) {
-					std::swap((*this)[i].key, (*this)[j].key);
+				if ((*this)[i].value < (*this)[j].value) {
+					std::swap((*this)[i].value, (*this)[j].value);
 				}
 			}
 		}
@@ -405,7 +405,7 @@ namespace SLL {
 			fout << fprint->value << std::endl;
 			fprint = fprint->next;
 		}
-		fout << fprint->value.key;
+		fout << fprint->value.value;
 
 		return fout;
 	}
@@ -417,8 +417,8 @@ namespace SLL {
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
         while (ret){
-            if (ret->idnex == index){
-                return ret;
+            if (ret->value.index == index){
+                return ret->value;
             }
 			ret = ret->next;
         }
@@ -431,8 +431,8 @@ namespace SLL {
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
         while (ret) {
-            if (ret->index == index){
-                return ret;
+            if (ret->value.index == index){
+                return ret->value;
             }
             ret = ret->next;
         }
