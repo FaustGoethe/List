@@ -7,6 +7,10 @@
 #include <fstream>
 #include <string>
 
+// TODO:
+// 1. Indexing with negative numbers
+// 2. Shuffle function
+// 3. Iterating using foreach
 
 namespace SLL{
     struct content{
