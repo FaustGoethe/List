@@ -85,6 +85,44 @@ namespace SLL {
         }
 	}
 
+    void List::push		(int32_t _value) noexcept {
+        list* ins = new list; // Äîáàâëÿåìûé ýëåìåíò
+        ins->value.value = _value;
+        ins->next = nullptr;
+
+        list* t = begin;
+        if (begin == nullptr) {
+            ins->value.index = 1;
+            begin = ins;
+            return;
+        }
+
+        if (ins->value.value <= t->value.value) {
+            ins->next = t;
+            begin = ins;
+            Indexation();
+            return;
+        }
+
+        list* t1 = t->next;
+        while (t != nullptr) {
+            if (t->next == nullptr) {
+                t->next = ins;
+                Indexation();
+                return;
+            }
+
+            if (ins->value.value >= t->value.value && ins->value.value <= t1->value.value) {
+                t->next = ins;
+                ins->next = t1;
+                Indexation();
+                return;
+            }
+
+            t = t->next;
+            t1 = t->next;
+        }
+    }
 	void List::push_back(int32_t value) noexcept {
 		list* inserter = new list;
 
