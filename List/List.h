@@ -51,17 +51,18 @@ namespace SLL{
 		void pop_back()  noexcept;
 		void pop_front() noexcept;
 
-		uint32_t size()  const noexcept;
-		bool   empty() const noexcept;
+		[[nodiscard]] uint32_t size()  const noexcept;
+		[[nodiscard]] bool   empty() const noexcept;
 
-		double averege() const noexcept;
-		int32_t max()		 const noexcept;
-		int32_t min()		 const noexcept;
+		[[nodiscard]] double averege() const noexcept;
+		[[nodiscard]] int32_t max() const noexcept;
+		[[nodiscard]] int32_t min() const noexcept;
+        [[nodiscard]] int32_t sum() const noexcept;
 
-		int64_t count(int32_t) const;
+		[[nodiscard]] int64_t count(int32_t) const;
 
-		list* _begin() const noexcept;
-		list* _end()   const noexcept;
+		[[nodiscard]] list* _begin() const noexcept;
+		[[nodiscard]] list* _end()   const noexcept;
 
 		void vsort(bool); // sort by values, key of reverse sort
 		void isort(bool); // sort by indexes, key of reverse sort
@@ -72,7 +73,7 @@ namespace SLL{
 		content& operator[](uint32_t);
 		content& operator[](uint32_t) const;
 
-		content find(int32_t) const noexcept;
+		[[nodiscard]] content find(int32_t) const noexcept;
 
 		void clear() noexcept;
 
