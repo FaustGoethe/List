@@ -1,5 +1,4 @@
 #include <iostream>
-#include <conio.h>
 #include "List.h"
 
 
@@ -13,8 +12,6 @@ int main(int argc, char* argv[]){
 	catch (const std::exception& excp) {
         std::cout << excp.what();
 	}
-
-    _getch();
 
 	return 0;
 }
