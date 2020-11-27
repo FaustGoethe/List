@@ -304,7 +304,7 @@ namespace SLL {
 		return (count == 0) ? -1 : count;
 	}
 
-	List::list* List::_begin() const noexcept {
+	list* List::_begin() const noexcept {
 		return begin;
 	}
 	list* List::_end()   const noexcept {
@@ -364,7 +364,7 @@ namespace SLL {
 	}
 
 	std::ostream& operator<<(std::ostream& os, const List& value) noexcept {
-		List::list* print = value.begin;
+		list* print = value.begin;
 
 		while (print) {
 			os << print->value << " -> ";
@@ -400,7 +400,7 @@ namespace SLL {
 			throw std::invalid_argument("Bad filename");
 		}
 
-		List::list* fprint = value.begin;
+		list* fprint = value.begin;
 
 		for (uint32_t i(0); i < value.size() - 1; i++) {
 			fout << fprint->value << std::endl;
@@ -411,7 +411,7 @@ namespace SLL {
 		return fout;
 	}
 
-	List::content& List::operator[](const uint32_t& index) {
+	content& List::operator[](uint32_t index) {
 		if (index > size() || index <= 0)
 			throw std::out_of_range("Error memory access\a");
 
@@ -424,8 +424,7 @@ namespace SLL {
 			ret = ret->next;
         }
 	}
-
-	List::content& List::operator[](uint32_t index) const {
+	content& List::operator[](uint32_t index) const {
 		if (index > size() || index <= 0)
 			throw std::out_of_range("Error memory access\a");
 
