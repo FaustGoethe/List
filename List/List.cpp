@@ -73,7 +73,7 @@ namespace SLL {
     }
 
 	void List::Indexation() noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 		list* iter = begin;
@@ -89,9 +89,9 @@ namespace SLL {
 		list* inserter = new list;
 
 		inserter->value.value = value;
-		inserter->next = NULL;
+		inserter->next = nullptr;
 
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			begin = inserter;
             begin->value.index = 0;
 			return;
@@ -99,9 +99,9 @@ namespace SLL {
 
 		list* iter = begin;
 		while (iter) {
-			if (iter->next == NULL) {
+			if (iter->next == nullptr) {
 				iter->next = inserter;
-				inserter->next = NULL;
+				inserter->next = nullptr;
 				inserter->value.index = iter->value.index + 1;
 				return;
 			}
@@ -119,16 +119,16 @@ namespace SLL {
 	}
 
 	void List::pop_back() noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 		list* t = begin;
 		list* t1 = t->next;
 
 		while (t) {
-			if (t1->next == NULL) {
+			if (t1->next == nullptr) {
 				delete t1;
-				t->next = NULL;
+				t->next = nullptr;
 				return;
 			}
 			t = t->next;
@@ -136,7 +136,7 @@ namespace SLL {
 		}
 	}
 	void List::pop_front() noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 		list* pop = begin;
@@ -146,7 +146,7 @@ namespace SLL {
 	}
 
 	uint32_t List::size()	const noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return 0;
 		}
 
@@ -159,12 +159,12 @@ namespace SLL {
 		}
 		return result;
 	}
-	bool	List::empty()	const noexcept {
-		return (begin == NULL);
+	bool List::empty()	const noexcept {
+		return (begin == nullptr);
 	}
 
 	double	List::averege() const noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return 0;
 		}
 
@@ -178,8 +178,8 @@ namespace SLL {
 		}
 		return i / size();
 	}
-	int32_t 		List::max()		const noexcept {
-		if (begin == NULL) {
+	int32_t List::max()		const noexcept {
+		if (begin == nullptr) {
 			return 0;
 		}
 
@@ -195,7 +195,7 @@ namespace SLL {
 		return result;
 	}
 	int32_t List::min()	const noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return 0;
 		}
 
@@ -228,14 +228,14 @@ namespace SLL {
 	List::list* List::_begin() const noexcept {
 		return begin;
 	}
-	List::list* List::_end()   const noexcept {
-		if (begin == NULL) {
-			return NULL;
+	list* List::_end()   const noexcept {
+		if (begin == nullptr) {
+			return nullptr;
 		}
 		list* end = begin;
 
 		while (end) {
-			if (end->next == NULL) {
+			if (end->next == nullptr) {
 				return end;
 			}
 			end = end->next;
@@ -258,7 +258,7 @@ namespace SLL {
 	}
 
 	void List::isort(bool reverse) {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 		for (uint32_t i(1); i <= size(); i++) {
@@ -277,7 +277,7 @@ namespace SLL {
 			os << print->value << " -> ";
 			print = print->next;
 		}
-		os << "NULL" << std::endl;
+		os << "nullptr" << std::endl;
 
 		print = value.begin;
 
@@ -285,7 +285,7 @@ namespace SLL {
 			os << print->value.index << " -> ";
 			print = print->next;
 		}
-		os << "NULL" << std::endl;
+		os << "nullptr" << std::endl;
 		os << std::endl;
 
 		os.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -300,7 +300,7 @@ namespace SLL {
 	}
 
 	std::ofstream& operator<<(std::ofstream& fout, const List& value) {
-		if (value.begin == NULL) {
+		if (value.begin == nullptr) {
 			throw std::runtime_error("Bad begin");
 		}
 		if (!fout.is_open()) {
@@ -347,7 +347,7 @@ namespace SLL {
 	}
 
 	void List::clear() noexcept {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 		list* deleter = begin;
@@ -359,7 +359,7 @@ namespace SLL {
 			delete temp;
 		}
 
-		begin = NULL;
+		begin = nullptr;
 	}
 
 	void List::resize(uint32_t newSize, uint32_t value) noexcept {
@@ -380,7 +380,7 @@ namespace SLL {
     }
 
 	void List::reverse() {
-		if (begin == NULL) {
+		if (begin == nullptr) {
 			return;
 		}
 
