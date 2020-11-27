@@ -269,7 +269,7 @@ namespace SLL {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access")));
 
-		list* ret = begin; // ������������ ��������� ���������
+		list* ret = begin; // Возвращаемый экземпляр структуры
 
         while (ret){
             if (ret->idnex == index){
@@ -283,7 +283,7 @@ namespace SLL {
 		if (index > size() || index <= 0)
 			throw std::out_of_range(EXCEPT("Error memory access\a")));
 
-		list* ret = begin; // ������������ ��������� ���������
+		list* ret = begin; // Возвращаемый экземпляр структуры
 
         while (ret) {
             if (ret->index == index){
