@@ -240,7 +240,6 @@ namespace SLL {
 		os << "Average: " << value.averege() << std::endl;
 		os << "Max: " << value.max() << std::endl;
 		os << "Min: " << value.min() << std::endl;
-		os << "Hash: " << value.getHash(32) << std::endl;
 
 		os << std::endl;
 		return os;
