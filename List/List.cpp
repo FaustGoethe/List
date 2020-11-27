@@ -248,10 +248,10 @@ namespace SLL {
 
 	std::ofstream& operator<<(std::ofstream& fout, const List& value) {
 		if (value.begin == NULL) {
-			throw std::runtime_error(EXCEPT("Bad begin")));
+			throw std::runtime_error("Bad begin");
 		}
 		if (!fout.is_open()) {
-			throw std::invalid_argument(EXCEPT("Bad filename")));
+			throw std::invalid_argument("Bad filename");
 		}
 
 		List::list* fprint = value.begin;
@@ -267,7 +267,7 @@ namespace SLL {
 
 	List::content& List::operator[](const uint32_t& index) {
 		if (index > size() || index <= 0)
-			throw std::out_of_range(EXCEPT("Error memory access")));
+			throw std::out_of_range("Error memory access\a");
 
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
@@ -281,7 +281,7 @@ namespace SLL {
 
 	List::content& List::operator[](uint32_t index) const {
 		if (index > size() || index <= 0)
-			throw std::out_of_range(EXCEPT("Error memory access\a")));
+			throw std::out_of_range("Error memory access\a");
 
 		list* ret = begin; // Возвращаемый экземпляр структуры
 
