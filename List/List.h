@@ -80,8 +80,6 @@ namespace SLL{
 		void Indexation() noexcept;
 
 		list* _end() noexcept;
-		//get type
-		//find
 	};
 }
 #endif
