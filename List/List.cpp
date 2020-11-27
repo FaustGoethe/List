@@ -188,6 +188,33 @@ namespace SLL {
 		delete pop;
 		Indexation();
 	}
+    void List::remove	(int32_t _value) {
+        if (begin == nullptr) {
+            throw std::runtime_error("Begin is null");
+        }
+
+        list* t = begin;
+
+        if (t->value.value == _value) {
+            begin = t->next;
+            delete t;
+            Indexation();
+            return;
+        }
+
+        list*  t1 = t->next;
+        while (t1 != nullptr) {
+            if (t1->value.value == _value) {
+                t->next = t1->next;
+                delete t1;
+                Indexation();
+                return;
+            }
+            t = t1;
+            t1 = t1->next;
+        }
+        throw std::runtime_error("Element not found");
+    }
 
 	uint32_t List::size()	const noexcept {
 		if (begin == nullptr) {
