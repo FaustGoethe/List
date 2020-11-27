@@ -320,9 +320,23 @@ namespace SLL {
 		}
 		return end;
 	}
+	list* List::_end() noexcept {
+        if (begin == nullptr) {
+            return nullptr;
+        }
+        list* end = begin;
 
-	void List::ksort(bool reverse) {
-		if (begin == NULL) {
+        while (end) {
+            if (end->next == nullptr) {
+                return end;
+            }
+            end = end->next;
+        }
+        return end;
+	}
+
+	void List::vsort(bool reverse) {
+		if (begin == nullptr) {
 			return;
 		}
 		// TODO: define lambda depending on reverse
