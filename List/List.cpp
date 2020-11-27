@@ -156,6 +156,12 @@ namespace SLL {
 		Indexation();
 	}
 
+	void List::pop(uint32_t index) {
+	    if (index >= size() || index < 0){
+	        throw std::out_of_range("Wrong index");
+	    }
+	    list* deleter = begin;
+	}
 	void List::pop_back() noexcept {
 		if (begin == nullptr) {
 			return;
