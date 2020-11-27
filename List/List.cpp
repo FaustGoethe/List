@@ -17,6 +17,60 @@ namespace SLL {
 		return *this;
 	}
 
+	List::List() noexcept {
+	    begin = nullptr;
+	}
+	List::List(const List& cp) noexcept {
+	    if (begin != nullptr){
+	        clear();
+	    }
+	    *begin = *cp.begin;
+	}
+	List::List(const int32_t *arr, uint32_t size) noexcept {
+	    begin = nullptr;
+	    for (auto i(0); i < size; ++i){
+	        push_back(arr[i]);
+	    }
+
+	    Indexation();
+	}
+	List::List(uint32_t size, int32_t value) noexcept {
+	    begin = nullptr;
+        for (auto i(0); i < size; ++i){
+            push_back(value);
+        }
+        Indexation();
+	}
+    List &List::operator()(const List& cp) noexcept {
+        if (begin != nullptr){
+            clear();
+        }
+        *begin = *cp.begin;
+        return *this;
+    }
+    List &List::operator=(const List& cp) noexcept {
+        if (begin != nullptr){
+            clear();
+        }
+        *begin = *cp.begin;
+        return *this;
+    }
+    List::~List() noexcept {
+        if (begin == nullptr) {
+            return;
+        }
+
+        list* deleting = begin;
+        list* temp;
+
+        while (deleting->next) {
+            temp = deleting;
+            deleting = deleting->next;
+            delete temp;
+        }
+
+        begin = nullptr;
+    }
 
 	void List::Indexation() noexcept {
 		if (begin == NULL) {
