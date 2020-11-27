@@ -263,11 +263,11 @@ namespace SLL {
 		}
 
 		list* temp = begin;
-		int32_t result = NULL;
+		auto result = INT64_MAX;
 
 		while (temp) {
-			if (result == NULL || temp->value.key < result) {
-				result = temp->value.key;
+			if (temp->value.value < result) {
+				result = temp->value.value;
 			}
 			temp = temp->next;
 		}
