@@ -451,7 +451,7 @@ namespace SLL {
 		begin = nullptr;
 	}
 
-	void List::resize(uint32_t newSize, uint32_t value) noexcept {
+	void List::resize(uint32_t newSize, int32_t value) noexcept {
 	    // TODO
 		list* parser = begin;
 		while (parser) {
