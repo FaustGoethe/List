@@ -68,6 +68,8 @@ namespace SLL{
 		content& operator[](uint32_t);
 		content& operator[](uint32_t) const;
 
+		content find(int32_t) const noexcept;
+
 		void clear() noexcept;
 
 		void resize(uint32_t, int32_t)	noexcept;

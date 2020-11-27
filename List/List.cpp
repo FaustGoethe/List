@@ -335,5 +335,9 @@ namespace SLL {
 			std::swap((*this)[start], (*this)[stop]);
 		}
 	}
+
+	content List::find(int32_t value) const noexcept {
+	    return *begin;
+	}
 }
 #endif // !_LIST_CPP
