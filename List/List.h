@@ -13,21 +13,21 @@
 // 3. Iterating using foreach
 
 namespace SLL{
-    struct content{
+    struct content {
         int32_t value;
         uint32_t index;
 
 		friend std::ostream& operator<<(std::ostream&, const content&) noexcept;
 		content& operator=(int32_t) noexcept;
-    }
+    };
     
 
-    struct list{
+    struct list {
         content value;
-        list* next; // the pointer links to the next element or NULL
+        list* next; // the pointer links to the next element or nullptr
 
 		friend std::ostream& operator<<(std::ostream&, const list&) noexcept;
-    }
+    };
 
 
 	class List{	
