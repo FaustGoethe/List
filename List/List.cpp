@@ -6,15 +6,8 @@
 
 
 namespace SLL {
-	std::ostream& operator<<(std::ostream& os, const content& _val) noexcept {
-		return os << _val.value;
-	}
 	std::ostream& operator<<(std::ostream& os, const list& _val) noexcept {
 		return os << _val.value;
-	}
-	content& content::operator=(int32_t _val) noexcept {
-		value = _val;
-		return *this;
 	}
 
 	List::List() noexcept {
@@ -31,15 +24,12 @@ namespace SLL {
 	    for (auto i(0); i < size; ++i){
 	        push_back(arr[i]);
 	    }
-
-	    Indexation();
 	}
 	List::List(uint32_t size, int32_t value) noexcept {
 	    begin = nullptr;
         for (auto i(0); i < size; ++i){
             push_back(value);
         }
-        Indexation();
 	}
     List &List::operator()(const List& cp) noexcept {
         if (begin != nullptr){
@@ -72,36 +62,20 @@ namespace SLL {
         begin = nullptr;
     }
 
-	void List::Indexation() noexcept {
-		if (begin == nullptr) {
-			return;
-		}
-		list* iter = begin;
-        uint32_t index = 0;
-
-        while(iter){
-            iter->value.index = index;
-            ++index;
-            iter = iter->next;
-        }
-	}
-
     void List::push		(int32_t _value) noexcept {
-        list* ins = new list; // Äîáàâëÿåìûé ýëåìåíò
-        ins->value.value = _value;
+        list* ins = new list;
+        ins->value = _value;
         ins->next = nullptr;
 
         list* t = begin;
         if (begin == nullptr) {
-            ins->value.index = 1;
             begin = ins;
             return;
         }
 
-        if (ins->value.value <= t->value.value) {
+        if (ins->value <= t->value) {
             ins->next = t;
             begin = ins;
-            Indexation();
             return;
         }
 
@@ -109,14 +83,12 @@ namespace SLL {
         while (t != nullptr) {
             if (t->next == nullptr) {
                 t->next = ins;
-                Indexation();
                 return;
             }
 
-            if (ins->value.value >= t->value.value && ins->value.value <= t1->value.value) {
+            if (ins->value >= t->value && ins->value <= t1->value) {
                 t->next = ins;
                 ins->next = t1;
-                Indexation();
                 return;
             }
 
@@ -127,12 +99,11 @@ namespace SLL {
 	void List::push_back(int32_t value) noexcept {
 		list* inserter = new list;
         // inserted value
-		inserter->value.value = value;
+		inserter->value = value;
 		inserter->next = nullptr;
 
 		if (begin == nullptr) {
 			begin = inserter;
-            begin->value.index = 0;
 			return;
 		}
 
@@ -141,7 +112,6 @@ namespace SLL {
 			if (iter->next == nullptr) {
 				iter->next = inserter;
 				inserter->next = nullptr;
-				inserter->value.index = iter->value.index + 1;
 				return;
 			}
 			iter = iter->next;
@@ -150,11 +120,10 @@ namespace SLL {
 	void List::push_front (int32_t value) noexcept {
 		list* inserter = new list;
 
-		inserter->value.value = value;
+		inserter->value = value;
 		inserter->next = begin;
 
 		begin = inserter;
-		Indexation();
 	}
 
 	void List::pop(uint32_t index) {
@@ -187,7 +156,6 @@ namespace SLL {
 		list* pop = begin;
 		begin = begin->next;
 		delete pop;
-		Indexation();
 	}
     void List::remove	(int32_t _value) {
         if (begin == nullptr) {
@@ -196,19 +164,17 @@ namespace SLL {
 
         list* t = begin;
 
-        if (t->value.value == _value) {
+        if (t->value == _value) {
             begin = t->next;
             delete t;
-            Indexation();
             return;
         }
 
         list*  t1 = t->next;
         while (t1 != nullptr) {
-            if (t1->value.value == _value) {
+            if (t1->value == _value) {
                 t->next = t1->next;
                 delete t1;
-                Indexation();
                 return;
             }
             t = t1;
@@ -251,8 +217,8 @@ namespace SLL {
 		auto result = INT64_MIN;
 
 		while (temp != nullptr) {
-			if (temp->value.value > result) {
-				result = temp->value.value;
+			if (temp->value > result) {
+				result = temp->value;
 			}
 			temp = temp->next;
 		}
@@ -267,8 +233,8 @@ namespace SLL {
 		auto result = INT64_MAX;
 
 		while (temp) {
-			if (temp->value.value < result) {
-				result = temp->value.value;
+			if (temp->value < result) {
+				result = temp->value;
 			}
 			temp = temp->next;
 		}
@@ -284,7 +250,7 @@ namespace SLL {
 	    int32_t res = 0;
 
 	    while (iter) {
-	        res += iter->value.value;
+	        res += iter->value;
 	        iter = iter->next;
 	    }
 
@@ -295,7 +261,7 @@ namespace SLL {
 		uint32_t count = 0;
         list* iter = begin;
         while (iter) {
-            if (iter->value.value == key){
+            if (iter->value == key){
                 ++count;
             }
             iter = iter->next;
@@ -336,27 +302,15 @@ namespace SLL {
         return end;
 	}
 
-	void List::vsort(bool reverse) {
+	void List::sort(bool reverse) {
 		if (begin == nullptr) {
 			return;
 		}
 		// TODO: define lambda depending on reverse
 		for (uint32_t i(1); i <= size(); i++) {
 			for (uint32_t j(1); j <= i; j++) {
-				if ((*this)[i].value < (*this)[j].value) {
-					std::swap((*this)[i].value, (*this)[j].value);
-				}
-			}
-		}
-	}
-	void List::isort(bool reverse) {
-		if (begin == nullptr) {
-			return;
-		}
-		for (uint32_t i(1); i <= size(); i++) {
-			for (uint32_t j(1); j <= i; j++) {
-				if ((*this)[i].index < (*this)[j].index) {
-					std::swap((*this)[i], (*this)[j]);
+				if ((*this)[i] < (*this)[j]) {
+//					std::swap((*this)[i], (*this)[j]);
 				}
 			}
 		}
@@ -370,15 +324,6 @@ namespace SLL {
 			print = print->next;
 		}
 		os << "nullptr" << std::endl;
-
-		print = value.begin;
-
-		while (print) {
-			os << print->value.index << " -> ";
-			print = print->next;
-		}
-		os << "nullptr" << std::endl;
-		os << std::endl;
 
 		os.setf(std::ios_base::fixed, std::ios_base::floatfield);
 		os.precision(2);
@@ -403,32 +348,32 @@ namespace SLL {
 			fout << fprint->value << std::endl;
 			fprint = fprint->next;
 		}
-		fout << fprint->value.value;
+		fout << fprint->value;
 
 		return fout;
 	}
 
-	content& List::operator[](uint32_t index) {
-		if (index > size() || index <= 0)
+	int32_t List::operator[](uint32_t index_) {
+		if (index_ > size() || index_ <= 0)
 			throw std::out_of_range("Error memory access\a");
 
 		list* ret = begin; // Возвращаемый экземпляр структуры
-
+        uint32_t index = 0;
         while (ret){
-            if (ret->value.index == index){
+            if (index == index_){
                 return ret->value;
             }
 			ret = ret->next;
         }
 	}
-	content& List::operator[](uint32_t index) const {
-		if (index > size() || index <= 0)
+	int32_t List::operator[](uint32_t index_) const {
+		if (index_ > size() || index_ <= 0)
 			throw std::out_of_range("Error memory access\a");
 
 		list* ret = begin; // Возвращаемый экземпляр структуры
-
+        uint32_t index = 0;
         while (ret) {
-            if (ret->value.index == index){
+            if (index == index_){
                 return ret->value;
             }
             ret = ret->next;
@@ -473,11 +418,11 @@ namespace SLL {
 		}
 
 		for (uint32_t start(1), stop(size()); start <= stop; ++start, --stop) {
-			std::swap((*this)[start], (*this)[stop]);
+//			std::swap((*this)[start], (*this)[stop]);
 		}
 	}
 
-	content List::find(int32_t value) const noexcept {
+	int32_t List::find(int32_t value) const noexcept {
 	    return begin->value;
 	}
 }
