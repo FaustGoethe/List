@@ -13,17 +13,17 @@
 // 3. Iterating using foreach
 
 namespace SLL{
-    struct content {
-        int32_t value;
-        uint32_t index;
-
-		friend std::ostream& operator<<(std::ostream&, const content&) noexcept;
-		content& operator=(int32_t) noexcept;
-    };
+//    struct content {
+//        int32_t value;
+//        uint32_t index;
+//
+//		friend std::ostream& operator<<(std::ostream&, const content&) noexcept;
+//		content& operator=(int32_t) noexcept;
+//    };
     
 
     struct list {
-        content value;
+        int32_t value;
         list* next; // the pointer links to the next element or nullptr
 
 		friend std::ostream& operator<<(std::ostream&, const list&) noexcept;
@@ -64,16 +64,15 @@ namespace SLL{
 		[[nodiscard]] list* _begin() const noexcept;
 		[[nodiscard]] list* _end()   const noexcept;
 
-		void vsort(bool); // sort by values, key of reverse sort
-		void isort(bool); // sort by indexes, key of reverse sort
+		void sort(bool); // sort by values, key of reverse sort
 
 		friend std::ostream& operator<<(std::ostream&, const List&) noexcept;
 		friend std::ofstream& operator<<(std::ofstream&, const List&);
 		
-		content& operator[](uint32_t);
-		content& operator[](uint32_t) const;
+		int32_t operator[](uint32_t);
+		int32_t operator[](uint32_t) const;
 
-		[[nodiscard]] content find(int32_t) const noexcept;
+		[[nodiscard]] int32_t find(int32_t) const noexcept;
 
 		void clear() noexcept;
 
@@ -83,8 +82,6 @@ namespace SLL{
 		void reverse();
 	private:
 		list* begin;
-
-		void Indexation() noexcept;
 
 		list* _end() noexcept;
 	};
